@@ -48,3 +48,32 @@ export async function auth(key: string, secret: string, region: Region, locale: 
         return false
     }
 }
+
+async function request(url: string, args: { [_: string]: string }) {
+    const euc = encodeURIComponent
+    const query = Object.keys(args).reduce((a, k, i) => a + (i == 0 ? '?' : '&') + euc(k) + '=' + euc(args[k]), '')
+    const response = await fetch(url + query)
+
+    if (response.ok) {
+        trace('Request successful', response.url)
+        return await response.json()
+    } else {
+        error('Request failed', response)
+        return false
+    }
+}
+
+export async function get(service: string, args: { [_: string]: string }) {
+    if (args.namespace) {
+        args.namespace += `-${config.region}`
+    }
+
+    args.locale = config.locale
+    args.access_token = config.token
+
+    const host = config.region == 'cn'
+        ? 'https://gateway.battlenet.com.cn/'
+        : `https://${config.region}.api.blizzard.com/`
+
+    return await request(host + service, args)
+}

@@ -9,6 +9,11 @@ interface IdName {
     name: string
 }
 
+interface TypeName {
+    type: string,
+    name: string
+}
+
 interface GenderName {
     male: string,
     female: string
@@ -59,7 +64,7 @@ export async function playableClassPvpTalentSlots(id: number): Promise<PlayableC
 
 interface PlayableRace extends IdName {
     gender_name: GenderName,
-    faction: { type: string, name: string },
+    faction: TypeName,
     is_selectable: boolean,
     is_allied_race: boolean
 }
@@ -93,7 +98,7 @@ interface PlayableSpecializationIndex {
 }
 
 interface PlayableSpecialization extends IdName {
-    role: { type: string, name: string },
+    role: TypeName,
     playable_class: IdNameOpt,
     gender_description: GenderName,
     talent_tiers?: {

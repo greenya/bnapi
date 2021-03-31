@@ -123,3 +123,14 @@ export async function playableSpecialization(id: number): Promise<PlayableSpecia
 export async function playableSpecializationMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/playable-specialization/${id}`, { namespace: 'static' })
 }
+
+// Power Type API
+
+export async function powerTypes(): Promise<IdName[]> {
+    const { power_types } = await get('data/wow/power-type/index', { namespace: 'static' })
+    return power_types
+}
+
+export async function powerType(id: number): Promise<IdName> {
+    return await get(`data/wow/power-type/${id}`, { namespace: 'static' })
+}

@@ -196,3 +196,14 @@ export async function recipe(id: number): Promise<Recipe> {
 export async function recipeMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/recipe/${id}`, { namespace: 'static' })
 }
+
+// WoW Token API
+
+interface WowToken {
+    price: number,
+    last_updated_timestamp: number
+}
+
+export async function wowToken(): Promise<WowToken> {
+    return await get('data/wow/token/index', { namespace: 'dynamic' })
+}

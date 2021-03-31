@@ -197,6 +197,25 @@ export async function recipeMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/recipe/${id}`, { namespace: 'static' })
 }
 
+// Title API
+
+interface Title extends IdName {
+    gender_name: GenderName,
+    source: {
+        type: TypeName,
+        achievements: IdName[]
+    }
+}
+
+export async function titles(): Promise<IdName> {
+    const { titles } = await get('data/wow/title/index', { namespace: 'static' })
+    return titles
+}
+
+export async function title(id: number): Promise<Title> {
+    return await get(`data/wow/title/${id}`, { namespace: 'static' })
+}
+
 // WoW Token API
 
 interface WowToken {

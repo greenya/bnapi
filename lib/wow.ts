@@ -139,3 +139,60 @@ export async function powerTypes(): Promise<IdName[]> {
 export async function powerType(id: number): Promise<IdName> {
     return await get(`data/wow/power-type/${id}`, { namespace: 'static' })
 }
+
+// Profession API
+
+interface Profession extends IdName {
+    description: string,
+    type: TypeName,
+    skill_tiers: IdName[],
+    media: { id: number }
+}
+
+interface ProfessionSkillTier extends IdName {
+    minimum_skill_level: number,
+    maximum_skill_level: number,
+    categories: {
+        name: string,
+        recipes: IdName[]
+    }[]
+}
+
+interface Recipe extends IdName {
+    crafted_item: IdName,
+    crafted_quantity: number,
+    reagents: {
+        reagent: IdName,
+        quantity: number
+    }[],
+    modified_crafting_slots: {
+        slot_type: IdName,
+        display_order: number
+    }[],
+    media: { id: number }
+}
+
+export async function professions(): Promise<IdName[]> {
+    const { professions } = await get('data/wow/profession/index', { namespace: 'static' })
+    return professions
+}
+
+export async function profession(id: number): Promise<Profession> {
+    return await get(`data/wow/profession/${id}`, { namespace: 'static' });
+}
+
+export async function professionMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/profession/${id}`, { namespace: 'static' })
+}
+
+export async function professionSkillTier(id: number, skillTierId: number): Promise<ProfessionSkillTier> {
+    return await get(`data/wow/profession/${id}/skill-tier/${skillTierId}`, { namespace: 'static' })
+}
+
+export async function recipe(id: number): Promise<Recipe> {
+    return await get(`data/wow/recipe/${id}`, { namespace: 'static' });
+}
+
+export async function recipeMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/recipe/${id}`, { namespace: 'static' })
+}

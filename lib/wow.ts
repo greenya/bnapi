@@ -4,18 +4,18 @@ import { get } from './core.ts'
 
 // Playable Race API
 
-export interface PlayableRaceIndex {
+interface PlayableRaceIndex {
     id: number,
     name: string
 }
 
-export type PlayableRace = {
+interface PlayableRace {
     id: number,
     name: string,
     gender_name: { male: string, female: string },
     faction: { type: string, name: string },
     is_selectable: boolean,
-    is_allied_Race: boolean
+    is_allied_race: boolean
 }
 
 export async function playableRaces(): Promise<PlayableRaceIndex[]> {

@@ -28,6 +28,66 @@ interface Media {
     }[]
 }
 
+// Achievement API
+
+interface AchievementCategoryIndex {
+    categories: IdName[],
+    root_categories: IdName[],
+    guild_categories: IdName[]
+}
+
+interface AchievementCategory extends IdName {
+    achievements: IdName[],
+    subcategories: IdName[],
+    parent_category?: IdName,
+    aggregates_by_faction: {
+        alliance: { quantity: number, points: number },
+        horde: { quantity: number, points: number }
+    },
+    is_guild_category: boolean,
+    display_order: number
+}
+
+interface AchievementCriteria {
+    id: number,
+    description: string,
+    amount: number,
+    achievement?: IdName,
+    child_criteria?: AchievementCriteria[],
+    operator?: TypeName
+}
+
+interface Achievement extends IdName {
+    category: IdName,
+    description: string,
+    points: number,
+    is_account_wide: boolean,
+    criteria: AchievementCriteria,
+    media: { id: number }
+    display_order: number
+}
+
+export async function achievementCategories(): Promise<AchievementCategoryIndex> {
+    return await get('data/wow/achievement-category/index', { namespace: 'static' })
+}
+
+export async function achievementCategory(id: number): Promise<AchievementCategory> {
+    return await get(`data/wow/achievement-category/${id}`, { namespace: 'static' })
+}
+
+export async function achievements(): Promise<IdName[]> {
+    const { achievements } = await get('data/wow/achievement/index', { namespace: 'static' })
+    return achievements
+}
+
+export async function achievement(id: number): Promise<Achievement> {
+    return await get(`data/wow/achievement/${id}`, { namespace: 'static' })
+}
+
+export async function achievementMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/achievement/${id}`, { namespace: 'static' })
+}
+
 // Playable Class API
 
 interface PlayableClass extends IdName {

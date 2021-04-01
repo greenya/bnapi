@@ -88,6 +88,86 @@ export async function achievementMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/achievement/${id}`, { namespace: 'static' })
 }
 
+// Journal API
+
+interface JournalExpansion extends IdName {
+    dungeons: IdName[],
+    raids: IdName[]
+}
+
+interface JournalEncounterSection {
+    id: number,
+    title: string,
+    body_text?: string,
+    creature_display?: { id: number },
+    sections?: JournalEncounterSection[],
+    spell?: IdName
+}
+
+interface JournalEncounter extends IdName {
+    description: string,
+    creatures: {
+        id: number,
+        name: string,
+        creature_display: { id: number }
+    }[],
+    items: {
+        id: number,
+        item: IdName
+    }[],
+    sections: JournalEncounterSection[],
+    instance: IdName,
+    category: { type: string },
+    modes?: TypeName[]
+}
+
+interface JournalInstance extends IdName {
+    description: string,
+    encounters: IdName[],
+    expansion: IdName,
+    location?: IdName,
+    map?: IdName,
+    category: { type: string },
+    minimum_level?: number,
+    modes?: {
+        mode: TypeName,
+        players: number,
+        is_tracked: boolean
+    }[],
+    media: { id: number }
+}
+
+export async function journalExpansions(): Promise<IdName[]> {
+    const { tiers } = await get('data/wow/journal-expansion/index', { namespace: 'static' })
+    return tiers
+}
+
+export async function journalExpansion(id: number): Promise<JournalExpansion> {
+    return await get(`data/wow/journal-expansion/${id}`, { namespace: 'static' })
+}
+
+export async function journalEncounters(): Promise<IdName[]> {
+    const { encounters } = await get('data/wow/journal-encounter/index', { namespace: 'static' })
+    return encounters
+}
+
+export async function journalEncounter(id: number): Promise<JournalEncounter> {
+    return await get(`data/wow/journal-encounter/${id}`, { namespace: 'static' })
+}
+
+export async function journalInstances(): Promise<IdName[]> {
+    const { instances } = await get('data/wow/journal-instance/index', { namespace: 'static' })
+    return instances
+}
+
+export async function journalInstance(id: number): Promise<JournalInstance> {
+    return await get(`data/wow/journal-instance/${id}`, { namespace: 'static' })
+}
+
+export async function journalInstanceMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/journal-instance/${id}`, { namespace: 'static' })
+}
+
 // Playable Class API
 
 interface PlayableClass extends IdName {

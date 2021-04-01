@@ -28,7 +28,9 @@ interface Media {
     }[]
 }
 
+// ===============
 // Achievement API
+// ===============
 
 interface AchievementCategoryIndex {
     categories: IdName[],
@@ -88,7 +90,140 @@ export async function achievementMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/achievement/${id}`, { namespace: 'static' })
 }
 
+// ========
+// Item API
+// ========
+
+interface ItemClass {
+    class_id: number,
+    name: string,
+    item_subclasses: IdName[]
+}
+
+interface ItemSubclass {
+    class_id: number,
+    subclass_id: number,
+    display_name: string,
+    verbose_name: string
+}
+
+interface ItemSetEffect {
+    display_string: string,
+    required_count: number
+}
+
+interface ItemSet extends IdName {
+    items: IdName[],
+    effects: ItemSetEffect[],
+    is_effect_active?: boolean
+}
+
+interface Display {
+    display_string: string,
+    color: { r: number, g: number, b: number, a: number }
+}
+
+interface PreviewItem {
+    context?: number,
+    item: { id: number },
+    quality: TypeName,
+    name: string,
+    media: { id: number },
+    item_class: IdName,
+    item_subclass: IdName,
+    inventory_type: TypeName,
+    binding?: TypeName,
+    armor?: { value: number, display: Display }
+    bonus_list?: number[],
+    stats?: {
+        type: TypeName,
+        value: number,
+        is_negated?: boolean,
+        is_equip_bonus?: boolean,
+        display: Display
+    }[],
+    spells?: {
+        spell: IdName,
+        description: string
+    }[],
+    requirements?: {
+        playable_classes: { display_string: string },
+        level: { value: number, display_string: string }
+    },
+    set?: {
+        item_set: IdName,
+        items: IdName[],
+        effects: ItemSetEffect[],
+        legacy: string,
+        display_string: string
+    },
+    level?: { value: number, display_string: string },
+    sell_price?: {
+        value: number,
+        display_strings: {
+            header: string,
+            gold: string,
+            silver: string,
+            copper: string
+        }
+    },
+    unique_equipped?: string,
+    description?: string,
+    is_subclass_hidden: boolean,
+    crafting_reagent?: string
+}
+
+interface Item extends IdName {
+    quality: TypeName,
+    level: number,
+    required_level: number,
+    media: { id: number },
+    item_class: IdName,
+    item_subclass: IdName,
+    inventory_type: TypeName,
+    purchase_price: number,
+    sell_price: number,
+    max_count: number,
+    is_equippable: boolean,
+    is_stackable: boolean,
+    description?: string,
+    preview_item: PreviewItem,
+    purchase_quantity: number
+}
+
+export async function itemClasses(): Promise<IdName[]> {
+    const { item_classes } = await get('data/wow/item-class/index', { namespace: 'static' })
+    return item_classes
+}
+
+export async function itemClass(id: number): Promise<ItemClass> {
+    return await get(`data/wow/item-class/${id}`, { namespace: 'static' })
+}
+
+export async function itemSubclass(classId: number, subclassId: number): Promise<ItemSubclass> {
+    return await get(`data/wow/item-class/${classId}/item-subclass/${subclassId}`, { namespace: 'static' })
+}
+
+export async function itemSets(): Promise<IdName[]> {
+    const { item_sets } = await get('data/wow/item-set/index', { namespace: 'static' })
+    return item_sets
+}
+
+export async function itemSet(id: number): Promise<ItemSet> {
+    return await get(`data/wow/item-set/${id}`, { namespace: 'static' })
+}
+
+export async function item(id: number): Promise<Item> {
+    return await get(`data/wow/item/${id}`, { namespace: 'static' })
+}
+
+export async function itemMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/item/${id}`, { namespace: 'static' })
+}
+
+// ===========
 // Journal API
+// ===========
 
 interface JournalExpansion extends IdName {
     dungeons: IdName[],
@@ -168,7 +303,9 @@ export async function journalInstanceMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/journal-instance/${id}`, { namespace: 'static' })
 }
 
+// ==================
 // Playable Class API
+// ==================
 
 interface PlayableClass extends IdName {
     gender_name: GenderName,
@@ -200,7 +337,9 @@ export async function playableClassPvpTalentSlots(id: number): Promise<PlayableC
     return talent_slots
 }
 
+// =================
 // Playable Race API
+// =================
 
 interface PlayableRace extends IdName {
     gender_name: GenderName,
@@ -218,7 +357,9 @@ export async function playableRace(id: number): Promise<PlayableRace> {
     return await get(`data/wow/playable-race/${id}`, { namespace: 'static' })
 }
 
+// ===========================
 // Playable Specialization API
+// ===========================
 
 interface IdNameOpt {
     id: number,
@@ -269,7 +410,9 @@ export async function playableSpecializationMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/playable-specialization/${id}`, { namespace: 'static' })
 }
 
+// ==============
 // Power Type API
+// ==============
 
 export async function powerTypes(): Promise<IdName[]> {
     const { power_types } = await get('data/wow/power-type/index', { namespace: 'static' })
@@ -280,7 +423,9 @@ export async function powerType(id: number): Promise<IdName> {
     return await get(`data/wow/power-type/${id}`, { namespace: 'static' })
 }
 
+// ==============
 // Profession API
+// ==============
 
 interface Profession extends IdName {
     description: string,
@@ -337,7 +482,9 @@ export async function recipeMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/recipe/${id}`, { namespace: 'static' })
 }
 
+// =========
 // Title API
+// =========
 
 interface Title extends IdName {
     gender_name: GenderName,
@@ -356,7 +503,9 @@ export async function title(id: number): Promise<Title> {
     return await get(`data/wow/title/${id}`, { namespace: 'static' })
 }
 
+// =============
 // WoW Token API
+// =============
 
 interface WowToken {
     price: number,

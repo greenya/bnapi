@@ -382,6 +382,28 @@ export async function journalInstanceMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/journal-instance/${id}`, { namespace: 'static' })
 }
 
+// =========================
+// Mythic Keystone Affix API
+// =========================
+
+interface MythicKeystoneAffix extends IdName {
+    description: string,
+    media: { id: number }
+}
+
+export async function mythicKeystoneAffixes(): Promise<IdName[]> {
+    const { affixes } = await get('data/wow/keystone-affix/index', { namespace: 'static' })
+    return affixes
+}
+
+export async function mythicKeystoneAffix(id: number): Promise<MythicKeystoneAffix> {
+    return await get(`data/wow/keystone-affix/${id}`, { namespace: 'static' })
+}
+
+export async function mythicKeystoneAffixMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/keystone-affix/${id}`, { namespace: 'static' })
+}
+
 // ===============================
 // Mythic Keystone Leaderboard API
 // ===============================

@@ -90,6 +90,36 @@ export async function achievementMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/achievement/${id}`, { namespace: 'static' })
 }
 
+// =================
+// Auction House API
+// =================
+
+interface AuctionItem {
+    id: number,
+    context?: number,
+    bonus_lists?: number[],
+    modifiers?: { type: number, value: number }[],
+    pet_breed_id?: number,
+    pet_level?: number,
+    pet_quality_id?: number,
+    pet_species_id?: number
+}
+
+interface Auction {
+    id: number,
+    item: AuctionItem,
+    bid?: number,
+    buyout?: number,
+    quantity: number,
+    unit_price: number,
+    time_left: string
+}
+
+export async function auctions(connectedRealmId: number): Promise<Auction[]> {
+    const { auctions } = await get(`data/wow/connected-realm/${connectedRealmId}/auctions`, { namespace: 'dynamic' })
+    return auctions
+}
+
 // ===================
 // Connected Realm API
 // ===================

@@ -33,3 +33,63 @@ Run your code like so:
 ```
 deno run --allow-net main.ts
 ```
+
+## World of Warcraft
+
+- Game Data APIs [link](https://develop.battle.net/documentation/world-of-warcraft/game-data-apis)
+
+    - [x] Achievement API
+    - [ ] Auction House API
+    - [ ] Azerite Essence API
+    - [ ] Connected Realm API
+    - [ ] Covenant API
+    - [ ] Creature API
+    - [ ] Guild Crest API
+    - [x] Item API
+    - [x] Journal API
+    - [ ] Media Search API
+    - [ ] Modified Crafting API
+    - [ ] Mount API
+    - [ ] Mythic Keystone Affix API
+    - [ ] Mythic Keystone Dungeon API
+    - [ ] Mythic Keystone Leaderboard API
+    - [ ] Mythic Raid Leaderboard API
+    - [ ] Pet API
+    - [x] Playable Class API
+    - [x] Playable Race API
+    - [x] Playable Specialization API
+    - [x] Power Type API
+    - [x] Profession API
+    - [ ] PvP Season API
+    - [ ] PvP Tier API
+    - [ ] Quest API
+    - [ ] Realm API
+    - [ ] Region API
+    - [ ] Reputations API
+    - [ ] Spell API
+    - [ ] Talent API
+    - [ ] Tech Talent API
+    - [x] Title API
+    - [x] WoW Token API
+
+- Profile APIs [link](https://develop.battle.net/documentation/world-of-warcraft/profile-apis)
+
+    - [ ] Account Profile API
+    - [ ] Character Achievements API
+    - [ ] Character Appearance API
+    - [ ] Character Collections API
+    - [ ] Character Encounters API
+    - [ ] Character Equipment API
+    - [ ] Character Hunter Pets API
+    - [ ] Character Media API
+    - [ ] Character Mythic Keystone Profile API
+    - [ ] Character Professions API
+    - [ ] Character Profile API
+    - [ ] Character PvP API
+    - [ ] Character Quests API
+    - [ ] Character Reputations API
+    - [ ] Character Soulbinds API
+    - [ ] Character Specializations API
+    - [ ] Character Statistics API
+    - [ ] Character Titles API
+    - [ ] Guild API

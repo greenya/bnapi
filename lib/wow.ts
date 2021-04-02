@@ -404,6 +404,69 @@ export async function mythicKeystoneAffixMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/keystone-affix/${id}`, { namespace: 'static' })
 }
 
+
+// ===========================
+// Mythic Keystone Dungeon API
+// ===========================
+
+interface MythicKeystoneDungeon extends IdName {
+    map: IdName,
+    zone: { slug: string },
+    dungeon: IdName,
+    keystone_upgrades: {
+        upgrade_level: number,
+        qualifying_duration: number
+    }[]
+}
+
+interface MythicKeystonePeriodIndex {
+    periods: { id: number }[],
+    current_period: { id: number }
+}
+
+interface MythicKeystonePeriod {
+    id: number,
+    start_timestamp: number,
+    end_timestamp: number
+}
+
+interface MythicKeystoneSeasonIndex {
+    seasons: { id: number }[],
+    current_season: { id: number }
+}
+
+interface MythicKeystoneSeason {
+    id: number,
+    start_timestamp: number,
+    end_timestamp?: number,
+    periods: { id: number }[]
+}
+
+export async function mythicKeystoneDungeons(): Promise<IdName[]> {
+    const { dungeons } = await get('data/wow/mythic-keystone/dungeon/index', { namespace: 'dynamic' })
+    return dungeons
+}
+
+export async function mythicKeystoneDungeon(id: number): Promise<MythicKeystoneDungeon> {
+    return await get(`data/wow/mythic-keystone/dungeon/${id}`, { namespace: 'dynamic' })
+}
+
+export async function mythicKeystonePeriods(): Promise<MythicKeystonePeriodIndex> {
+    return await get('data/wow/mythic-keystone/period/index', { namespace: 'dynamic' })
+}
+
+export async function mythicKeystonePeriod(id: number): Promise<MythicKeystonePeriod> {
+    return await get(`data/wow/mythic-keystone/period/${id}`, { namespace: 'dynamic' })
+}
+
+export async function mythicKeystoneSeasons(): Promise<MythicKeystoneSeasonIndex> {
+    return await get('data/wow/mythic-keystone/season/index', { namespace: 'dynamic' })
+}
+
+export async function mythicKeystoneSeason(id: number): Promise<MythicKeystoneSeason> {
+    return await get(`data/wow/mythic-keystone/season/${id}`, { namespace: 'dynamic' })
+}
+
 // ===============================
 // Mythic Keystone Leaderboard API
 // ===============================

@@ -125,8 +125,7 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
 // ===================
 
 interface ConnectedRealmRef {
-    id: number,
-    href: string
+    id: number
 }
 
 interface Realm extends IdName {
@@ -152,21 +151,21 @@ interface ConnectedRealm {
 // so we parse id and return object which has parsed "id" and original "href"
 // Note: "id" gets -1 in case of parsing failure
 
-function connectedRealmRefFromHref(href: string): ConnectedRealmRef {
-    return {
-        id: parseInt((href.match(/\d+/) || [ '-1' ])[0]),
-        href
-    }
+// deno-lint-ignore no-explicit-any
+function connectedRealmRefFromRef(ref: any): ConnectedRealmRef {
+    ref.id = parseInt((ref.href.match(/connected-realm\/(\d+)/) || { 1: '-1' })[1])
+    return ref
 }
 
 export async function connectedRealms(): Promise<ConnectedRealmRef[]> {
     const { connected_realms } = await get('data/wow/connected-realm/index', { namespace: 'dynamic' })
-    return connected_realms.map(({ href }: { href: string }) => connectedRealmRefFromHref(href))
+    // deno-lint-ignore no-explicit-any
+    return connected_realms.map((e: any) => connectedRealmRefFromRef(e))
 }
 
 export async function connectedRealm(id: number): Promise<ConnectedRealm> {
     const result: ConnectedRealm = await get(`data/wow/connected-realm/${id}`, { namespace: 'dynamic' })
-    result.realms.forEach(e => e.connected_realm = connectedRealmRefFromHref(e.connected_realm.href))
+    result.realms.forEach(e => connectedRealmRefFromRef(e.connected_realm))
     return result
 }
 
@@ -381,6 +380,64 @@ export async function journalInstance(id: number): Promise<JournalInstance> {
 
 export async function journalInstanceMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/journal-instance/${id}`, { namespace: 'static' })
+}
+
+// ===============================
+// Mythic Keystone Leaderboard API
+// ===============================
+
+interface MythicKeystoneLeaderboardRef extends IdName {
+    period: number
+}
+
+interface MythicKeystoneLeaderboard {
+    map_challenge_mode_id: number,
+    map: IdName,
+    name: string,
+    period: number,
+    period_start_timestamp: number,
+    period_end_timestamp: number,
+    connected_realm: ConnectedRealmRef,
+    keystone_affixes: {
+        keystone_affix: IdName,
+        starting_level: number
+    }[],
+    leading_groups: {
+        ranking: number,
+        duration: number,
+        completed_timestamp: number,
+        keystone_level: number,
+        members: {
+            profile: {
+                id: number,
+                name: string,
+                realm: { id: number, slug: string }
+            },
+            faction: { type: string },
+            specialization: { id: number }
+        }[]
+    }[]
+}
+
+// Blizzard returns "key" with "href" prop (which has "period" if parsed, which is what we do below)
+// Note: "period" gets -1 in case of parsing failure
+
+// deno-lint-ignore no-explicit-any
+function mythicKeystoneLeaderboardRefFromRef(ref: any): MythicKeystoneLeaderboardRef {
+    ref.period = parseInt((ref.key.href.match(/period\/(\d+)/) || { 1: '-1' })[1])
+    return ref
+}
+
+export async function mythicKeystoneLeaderboards(connectedRealmId: number): Promise<MythicKeystoneLeaderboardRef[]> {
+    const { current_leaderboards } = await get(`data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/index`, { namespace: 'dynamic' })
+    // deno-lint-ignore no-explicit-any
+    return current_leaderboards.map((e: any) => mythicKeystoneLeaderboardRefFromRef(e))
+}
+
+export async function mythicKeystoneLeaderboard(connectedRealmId: number, dungeonId: number, period: number): Promise<MythicKeystoneLeaderboard> {
+    const result = await get(`data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/${dungeonId}/period/${period}`, { namespace: 'dynamic' })
+    connectedRealmRefFromRef(result.connected_realm)
+    return result
 }
 
 // ==================

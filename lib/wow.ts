@@ -90,6 +90,56 @@ export async function achievementMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/achievement/${id}`, { namespace: 'static' })
 }
 
+// ===================
+// Connected Realm API
+// ===================
+
+interface ConnectedRealmRef {
+    id: number,
+    href: string
+}
+
+interface Realm extends IdName {
+    region: IdName,
+    connected_realm: ConnectedRealmRef,
+    category: string,
+    locale: string,
+    timezone: string,
+    type: TypeName,
+    is_tournament: boolean,
+    slug: string
+}
+
+interface ConnectedRealm {
+    id: number,
+    has_queue: boolean,
+    status: TypeName,
+    population: TypeName,
+    realms: Realm[]
+}
+
+// Blizzard returns only "href" prop for "connected realm" object, but expect an id when we request specific connected realm,
+// so we parse id and return object which has parsed "id" and original "href"
+// Note: "id" gets -1 in case of parsing failure
+
+function connectedRealmRefFromHref(href: string): ConnectedRealmRef {
+    return {
+        id: parseInt((href.match(/\d+/) || [ '-1' ])[0]),
+        href
+    }
+}
+
+export async function connectedRealms(): Promise<ConnectedRealmRef[]> {
+    const { connected_realms } = await get('data/wow/connected-realm/index', { namespace: 'dynamic' })
+    return connected_realms.map(({ href }: { href: string }) => connectedRealmRefFromHref(href))
+}
+
+export async function connectedRealm(id: number): Promise<ConnectedRealm> {
+    const result: ConnectedRealm = await get(`data/wow/connected-realm/${id}`, { namespace: 'dynamic' })
+    result.realms.forEach(e => e.connected_realm = connectedRealmRefFromHref(e.connected_realm.href))
+    return result
+}
+
 // ========
 // Item API
 // ========

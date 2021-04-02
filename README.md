@@ -39,9 +39,9 @@ deno run --allow-net main.ts
 - Game Data APIs [link](https://develop.battle.net/documentation/world-of-warcraft/game-data-apis)
 
     - [x] Achievement API
-    - [ ] Auction House API
+    - [x] Auction House API
     - [ ] Azerite Essence API
-    - [ ] Connected Realm API
+    - [x] Connected Realm API
     - [ ] Covenant API
     - [ ] Creature API
     - [ ] Guild Crest API
@@ -50,9 +50,9 @@ deno run --allow-net main.ts
     - [ ] Media Search API
     - [ ] Modified Crafting API
     - [ ] Mount API
-    - [ ] Mythic Keystone Affix API
-    - [ ] Mythic Keystone Dungeon API
-    - [ ] Mythic Keystone Leaderboard API
+    - [x] Mythic Keystone Affix API
+    - [x] Mythic Keystone Dungeon API
+    - [x] Mythic Keystone Leaderboard API
     - [ ] Mythic Raid Leaderboard API
     - [ ] Pet API
     - [x] Playable Class API

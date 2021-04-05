@@ -684,7 +684,7 @@ export async function professions(): Promise<IdName[]> {
 }
 
 export async function profession(id: number): Promise<Profession> {
-    return await get(`data/wow/profession/${id}`, { namespace: 'static' });
+    return await get(`data/wow/profession/${id}`, { namespace: 'static' })
 }
 
 export async function professionMedia(id: number): Promise<Media> {
@@ -696,7 +696,7 @@ export async function professionSkillTier(id: number, skillTierId: number): Prom
 }
 
 export async function recipe(id: number): Promise<Recipe> {
-    return await get(`data/wow/recipe/${id}`, { namespace: 'static' });
+    return await get(`data/wow/recipe/${id}`, { namespace: 'static' })
 }
 
 export async function recipeMedia(id: number): Promise<Media> {
@@ -717,9 +717,38 @@ export async function realms(): Promise<RealmRef[]> {
 }
 
 export async function realm(slug: string): Promise<Realm> {
-    const result: Realm = await get(`data/wow/realm/${slug}`, { namespace: 'dynamic' });
+    const result: Realm = await get(`data/wow/realm/${slug}`, { namespace: 'dynamic' })
     result.connected_realm = connectedRealmRefFromRef(result.connected_realm)
     return result
+}
+
+// ==========
+// Region API
+// ==========
+
+interface RegionRef {
+    id: number
+}
+
+interface Region extends IdName {
+    tag: string
+}
+
+// deno-lint-ignore no-explicit-any
+function regionRefFromRef(ref: any): RegionRef {
+    ref.id = parseInt((ref.href.match(/region\/(\d+)/) || { 1: '-1' })[1])
+    return ref
+}
+
+export async function regions(): Promise<RegionRef[]> {
+    const { regions } = await get('data/wow/region/index', { namespace: 'dynamic' })
+    // deno-lint-ignore no-explicit-any
+    regions.forEach((e: any) => regionRefFromRef(e))
+    return regions
+}
+
+export async function region(id: number): Promise<Region> {
+    return await get(`data/wow/region/${id}`, { namespace: 'dynamic' })
 }
 
 // =========

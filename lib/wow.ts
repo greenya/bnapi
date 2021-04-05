@@ -9,6 +9,11 @@ interface IdName {
     name: string
 }
 
+interface IdNameOpt {
+    id: number,
+    name?: string
+}
+
 interface TypeName {
     type: string,
     name: string
@@ -582,11 +587,6 @@ export async function playableRace(id: number): Promise<PlayableRace> {
 // Playable Specialization API
 // ===========================
 
-interface IdNameOpt {
-    id: number,
-    name?: string
-}
-
 interface SpellTooltip {
     description: string,
     cast_time: string,
@@ -749,6 +749,51 @@ export async function regions(): Promise<RegionRef[]> {
 
 export async function region(id: number): Promise<Region> {
     return await get(`data/wow/region/${id}`, { namespace: 'dynamic' })
+}
+
+// ===============
+// Reputations API
+// ===============
+
+interface ReputationFactionIndex {
+    factions: IdName[],
+    root_factions: IdName[]
+}
+
+interface ReputationFaction extends IdName {
+    reputation_tiers: { id: number },
+    description?: string,
+    can_paragon?: boolean,
+    factions?: IdName[],
+    is_header?: boolean
+}
+
+interface ReputationTier extends IdName {
+    min_value: number,
+    max_value: number
+}
+
+interface ReputationTiers {
+    id: number,
+    tiers: ReputationTier[],
+    faction?: IdName
+}
+
+export async function reputationFactions(): Promise<ReputationFactionIndex> {
+    return await get('data/wow/reputation-faction/index', { namespace: 'static' })
+}
+
+export async function reputationFaction(id: number): Promise<ReputationFaction> {
+    return await get(`data/wow/reputation-faction/${id}`, { namespace: 'static' })
+}
+
+export async function reputationTiersList(): Promise<IdNameOpt[]> {
+    const { reputation_tiers } = await get('data/wow/reputation-tiers/index', { namespace: 'static' })
+    return reputation_tiers
+}
+
+export async function reputationTiers(id: number): Promise<ReputationTiers> {
+    return await get(`data/wow/reputation-tiers/${id}`, { namespace: 'static' })
 }
 
 // =========

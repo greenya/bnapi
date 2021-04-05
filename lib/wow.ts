@@ -14,6 +14,12 @@ interface IdNameOpt {
     name?: string
 }
 
+interface IdNameSlug {
+    id: number,
+    name: string,
+    slug: string
+}
+
 interface TypeName {
     type: string,
     name: string
@@ -31,6 +37,13 @@ interface Media {
         value: string,
         file_data_id: number
     }[]
+}
+
+interface RGBA {
+    r: number,
+    g: number,
+    b: number,
+    a: number
 }
 
 // ===============
@@ -133,15 +146,14 @@ interface ConnectedRealmRef {
     id: number
 }
 
-interface Realm extends IdName {
+interface Realm extends IdNameSlug {
     region: IdName,
     connected_realm: ConnectedRealmRef,
     category: string,
     locale: string,
     timezone: string,
     type: TypeName,
-    is_tournament: boolean,
-    slug: string
+    is_tournament: boolean
 }
 
 interface ConnectedRealm {
@@ -174,6 +186,103 @@ export async function connectedRealm(id: number): Promise<ConnectedRealm> {
     return result
 }
 
+// =========
+// Guild API
+// =========
+
+interface GuildCrest {
+    emblem: {
+        id: number,
+        media: { id: number },
+        color: { id: number, rgba: RGBA }
+    },
+    border: {
+        id: number,
+        media: { id: number },
+        color: { id: number, rgba: RGBA }
+    },
+    background: { id: number, rgba: RGBA }
+}
+
+interface Guild extends IdName {
+    faction: TypeName,
+    created_timestamp: number,
+    achievement_points: number,
+    member_count: number,
+    realm: IdNameSlug,
+    crest: GuildCrest
+}
+
+interface GuildActivity {
+    timestamp: number,
+    activity: { type: string },
+    character_achievement?: {
+        character: { id: number, name: string, realm: IdNameSlug },
+        achievement: IdName
+    },
+    encounter_completed?: {
+        encounter: IdName,
+        mode: TypeName
+    }
+}
+
+interface GuildAchievementCriteria {
+    id: number,
+    amount?: number,
+    is_completed: boolean,
+    child_criteria?: GuildAchievementCriteria[]
+}
+
+interface GuildAchievements {
+    total_quantity: number,
+    total_points: number,
+    achievements: {
+        id: number,
+        achievement: IdName,
+        criteria: GuildAchievementCriteria,
+        completed_timestamp: number
+    }[],
+    category_progress: {
+        category: IdName,
+        quantity: number,
+        points: number
+    }[],
+    recent_events: {
+        timestamp: number,
+        achievement: IdName
+    }[]
+}
+
+interface GuildMember {
+    character: {
+        id: number,
+        name: string,
+        realm: { id: number, slug: string },
+        level: number,
+        playable_class: { id: number },
+        playable_race: { id: number }
+    },
+    rank: number
+}
+
+export async function guild(realmSlug: string, nameSlug: string): Promise<Guild> {
+    return await get(`data/wow/guild/${realmSlug}/${nameSlug}`, { namespace: 'profile' })
+}
+
+export async function guildActivity(realmSlug: string, nameSlug: string): Promise<GuildActivity[]> {
+    const { activities } = await get(`data/wow/guild/${realmSlug}/${nameSlug}/activity`, { namespace: 'profile' })
+    return activities
+}
+
+export async function guildAchievements(realmSlug: string, nameSlug: string): Promise<GuildAchievements> {
+    return await get(`data/wow/guild/${realmSlug}/${nameSlug}/achievements`, { namespace: 'profile' })
+}
+
+export async function guildRoster(realmSlug: string, nameSlug: string): Promise<GuildMember[]> {
+    const { members } = await get(`data/wow/guild/${realmSlug}/${nameSlug}/roster`, { namespace: 'profile' })
+    return members
+}
+
 // ========
 // Item API
 // ========
@@ -204,7 +313,7 @@ interface ItemSet extends IdName {
 
 interface Display {
     display_string: string,
-    color: { r: number, g: number, b: number, a: number }
+    color: RGBA
 }
 
 interface PreviewItem {
@@ -707,11 +816,7 @@ export async function recipeMedia(id: number): Promise<Media> {
 // Realm API
 // =========
 
-interface RealmRef extends IdName {
-    slug: string
-}
-
-export async function realms(): Promise<RealmRef[]> {
+export async function realms(): Promise<IdNameSlug[]> {
     const { realms } = await get('data/wow/realm/index', { namespace: 'dynamic' })
     return realms
 }

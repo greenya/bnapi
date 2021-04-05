@@ -63,9 +63,9 @@ deno run --allow-net main.ts
     - [ ] PvP Season API
     - [ ] PvP Tier API
     - [ ] Quest API
-    - [ ] Realm API
-    - [ ] Region API
-    - [ ] Reputations API
+    - [x] Realm API
+    - [x] Region API
+    - [x] Reputations API
     - [ ] Spell API
     - [ ] Talent API
     - [ ] Tech Talent API
@@ -92,4 +92,4 @@ deno run --allow-net main.ts
     - [ ] Character Specializations API
     - [ ] Character Statistics API
     - [ ] Character Titles API
-    - [ ] Guild API
+    - [x] Guild API

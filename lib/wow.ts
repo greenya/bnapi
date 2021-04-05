@@ -404,7 +404,6 @@ export async function mythicKeystoneAffixMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/keystone-affix/${id}`, { namespace: 'static' })
 }
 
-
 // ===========================
 // Mythic Keystone Dungeon API
 // ===========================
@@ -702,6 +701,25 @@ export async function recipe(id: number): Promise<Recipe> {
 
 export async function recipeMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/recipe/${id}`, { namespace: 'static' })
+}
+
+// =========
+// Realm API
+// =========
+
+interface RealmRef extends IdName {
+    slug: string
+}
+
+export async function realms(): Promise<RealmRef[]> {
+    const { realms } = await get('data/wow/realm/index', { namespace: 'dynamic' })
+    return realms
+}
+
+export async function realm(slug: string): Promise<Realm> {
+    const result: Realm = await get(`data/wow/realm/${slug}`, { namespace: 'dynamic' });
+    result.connected_realm = connectedRealmRefFromRef(result.connected_realm)
+    return result
 }
 
 // =========

@@ -211,6 +211,20 @@ export async function characterProfileStatus(realmSlug: string, characterName: s
     return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/status`, { namespace: 'profile' })
 }
 
+// ====================
+// Character Quests API
+// ====================
+
+export async function characterQuestsInProgress(realmSlug: string, characterName: string): Promise<IdName[]> {
+    const { in_progress } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/quests`, { namespace: 'profile' })
+    return in_progress
+}
+
+export async function characterQuestsCompleted(realmSlug: string, characterName: string): Promise<IdName[]> {
+    const { quests } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/quests/completed`, { namespace: 'profile' })
+    return quests
+}
+
 // =========================
 // Character Reputations API
 // =========================

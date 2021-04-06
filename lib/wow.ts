@@ -161,6 +161,27 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// =========================
+// Character Hunter Pets API
+// =========================
+
+interface CharacterHunterPet {
+    name: string,
+    level: number,
+    slot: number,
+    creature: IdName,
+    creature_display: { id: number },
+    is_active?: boolean
+}
+
+/**
+ * If the character is a hunter, returns a summary of the character's hunter pets. Otherwise, returns an HTTP 404 Not Found error.
+ */
+export async function characterHunterPets(realmSlug: string, characterName: string): Promise<CharacterHunterPet[]> {
+    const { hunter_pets } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/hunter-pets`, { namespace: 'profile' })
+    return hunter_pets
+}
+
 // ===================
 // Character Media API
 // ===================

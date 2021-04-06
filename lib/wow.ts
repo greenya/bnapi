@@ -30,6 +30,18 @@ interface GenderName {
     female: string
 }
 
+interface SpellTooltip {
+    description: string,
+    cast_time: string,
+    range?: string,
+    power_cost?: string,
+    cooldown?: string
+}
+
+interface SpellTooltipSpell extends SpellTooltip {
+    spell: IdName
+}
+
 interface Media {
     id: number,
     assets: {
@@ -222,6 +234,32 @@ interface CharacterReputation {
 export async function characterReputations(realmSlug: string, characterName: string): Promise<CharacterReputation[]> {
     const { reputations } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/reputations`, { namespace: 'profile' })
     return reputations
+}
+
+// =============================
+// Character Specializations API
+// =============================
+
+interface CharacterSpecialization {
+    specialization: IdName,
+    talents?: {
+        talent: IdName,
+        spell_tooltip: SpellTooltipSpell,
+        tier_index: number,
+        column_index: number
+    }[],
+    pvp_talent_slots?: {
+        selected: {
+            talent: IdName,
+            spell_tooltip: SpellTooltipSpell
+        },
+        slot_number: number
+    }[]
+}
+
+export async function characterSpecializations(realmSlug: string, characterName: string): Promise<CharacterSpecialization[]> {
+    const { specializations } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/specializations`, { namespace: 'profile' })
+    return specializations
 }
 
 // ========================
@@ -840,13 +878,6 @@ export async function playableRace(id: number): Promise<PlayableRace> {
 // ===========================
 // Playable Specialization API
 // ===========================
-
-interface SpellTooltip {
-    description: string,
-    cast_time: string,
-    power_cost?: string,
-    cooldown?: string
-}
 
 interface PlayableSpecializationIndex {
     character_specializations: IdName[],

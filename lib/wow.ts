@@ -236,6 +236,32 @@ export async function characterReputations(realmSlug: string, characterName: str
     return reputations
 }
 
+// =======================
+// Character Soulbinds API
+// =======================
+
+interface CharacterSoulbind {
+    soulbind: IdName,
+    traits?: {
+        trait?: IdName,
+        conduit_socket?: {
+            type: TypeName,
+            socket: {
+                conduit: IdName,
+                rank: number
+            }
+        },
+        tier: number,
+        display_order: number
+    }[],
+    is_active?: boolean
+}
+
+export async function characterSoulbinds(realmSlug: string, characterName: string): Promise<CharacterSoulbind[]> {
+    const { soulbinds } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/soulbinds`, { namespace: 'profile' })
+    return soulbinds
+}
+
 // =============================
 // Character Specializations API
 // =============================

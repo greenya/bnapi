@@ -14,6 +14,11 @@ interface IdNameOpt {
     name?: string
 }
 
+interface IdSlug {
+    id: number,
+    slug: string
+}
+
 interface IdNameSlug {
     id: number,
     name: string,
@@ -28,6 +33,12 @@ interface TypeName {
 interface GenderName {
     male: string,
     female: string
+}
+
+interface Character {
+    id: number,
+    name: string,
+    realm: IdSlug
 }
 
 interface SpellTooltip {
@@ -148,6 +159,48 @@ interface Auction {
 export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     const { auctions } = await get(`data/wow/connected-realm/${connectedRealmId}/auctions`, { namespace: 'dynamic' })
     return auctions
+}
+
+// =====================================
+// Character Mythic Keystone Profile API
+// =====================================
+
+interface CharacterMythicKeystoneProfile {
+    current_period: {
+        period: { id: number }
+    },
+    seasons: {
+        id: number
+    }[]
+}
+
+interface CharacterMythicKeystoneRun {
+    completed_timestamp: number,
+    duration: number,
+    keystone_level: number,
+    keystone_affixes: IdName[],
+    members: {
+        character: Character,
+        specialization: IdName,
+        race: IdName,
+        equipped_item_level: number
+    }[],
+    dungeon: IdName,
+    is_completed_within_time: boolean
+}
+
+export async function characterMythicKeystoneProfile(realmSlug: string, characterName: string): Promise<CharacterMythicKeystoneProfile> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile`, { namespace: 'profile' })
+}
+
+/**
+ * Returns the Mythic Keystone season details for a character.
+ *
+ * Returns a 404 Not Found for characters that have not yet completed a Mythic Keystone dungeon for the specified season.
+ */
+export async function characterMythicKeystoneSeasonBestRuns(realmSlug: string, characterName: string, season: number): Promise<CharacterMythicKeystoneRun[]> {
+    const { best_runs } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile/season/${season}`, { namespace: 'profile' })
+    return best_runs
 }
 
 // =========================
@@ -503,15 +556,14 @@ interface GuildAchievements {
     }[]
 }
 
+interface GuildMemberCharacter extends Character {
+    level: number,
+    playable_class: { id: number },
+    playable_race: { id: number }
+}
+
 interface GuildMember {
-    character: {
-        id: number,
-        name: string,
-        realm: { id: number, slug: string },
-        level: number,
-        playable_class: { id: number },
-        playable_race: { id: number }
-    },
+    character: GuildMemberCharacter,
     rank: number
 }
 
@@ -856,11 +908,7 @@ interface MythicKeystoneLeaderboard {
         completed_timestamp: number,
         keystone_level: number,
         members: {
-            profile: {
-                id: number,
-                name: string,
-                realm: { id: number, slug: string }
-            },
+            profile: Character,
             faction: { type: string },
             specialization: { id: number }
         }[]

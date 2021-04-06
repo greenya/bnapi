@@ -161,6 +161,20 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// ===================
+// Character Media API
+// ===================
+
+interface CharacterMediaAsset {
+    key: string,
+    value: string
+}
+
+export async function characterMediaAssets(realmSlug: string, characterName: string): Promise<CharacterMediaAsset[]> {
+    const { assets } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/character-media`, { namespace: 'profile' })
+    return assets
+}
+
 // =====================================
 // Character Mythic Keystone Profile API
 // =====================================

@@ -138,6 +138,67 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// =====================
+// Character Profile API
+// =====================
+
+interface CharacterProfile extends IdName {
+    gender: TypeName,
+    faction: TypeName,
+    race: IdName,
+    character_class: IdName,
+    active_spec: IdName,
+    realm: IdNameSlug,
+    guild: {
+        id: number,
+        name: string,
+        faction: TypeName,
+        realm: IdNameSlug
+    },
+    level: number,
+    experience: number,
+    achievement_points: number,
+    last_login_timestamp: number,
+    average_item_level: number,
+    equipped_item_level: number,
+    active_title: {
+        id: number,
+        name: string,
+        display_string: string
+    },
+    covenant_progress: {
+        chosen_covenant: IdName,
+        renown_level: number
+    }
+}
+
+interface CharacterProfileStatus {
+    id: number,
+    is_valid: boolean
+}
+
+export async function characterProfile(realmSlug: string, characterName: string): Promise<CharacterProfile> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}`, { namespace: 'profile' })
+}
+
+/**
+ * Returns the status and a unique ID for a character.
+ *
+ * A client should delete information about a character from their application if any of the following conditions occur:
+ * - an HTTP 404 Not Found error is returned
+ * - the is_valid value is false
+ * - the returned character ID doesn't match the previously recorded value for the character
+ *
+ * The following example illustrates how to use this endpoint:
+ * 1. A client requests and stores information about a character, including its unique character ID and the timestamp of the request.
+ * 2. After 30 days, the client makes a request to the status endpoint to verify if the character information is still valid.
+ * 3. If character cannot be found, is not valid, or the characters IDs do not match, the client removes the information from their application.
+ * 4. If the character is valid and the character IDs match, the client retains the data for another 30 days.
+ */
+export async function characterProfileStatus(realmSlug: string, characterName: string): Promise<CharacterProfileStatus> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/status`, { namespace: 'profile' })
+}
+
 // ===================
 // Connected Realm API
 // ===================

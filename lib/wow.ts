@@ -199,6 +199,31 @@ export async function characterProfileStatus(realmSlug: string, characterName: s
     return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/status`, { namespace: 'profile' })
 }
 
+// =========================
+// Character Reputations API
+// =========================
+
+interface CharacterReputation {
+    faction: IdName,
+    standing: {
+        raw: number,
+        value: number,
+        max: number,
+        tier: number,
+        name: string
+    },
+    paragon?: {
+        raw: number,
+        value: number,
+        max: number
+    }
+}
+
+export async function characterReputations(realmSlug: string, characterName: string): Promise<CharacterReputation[]> {
+    const { reputations } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/reputations`, { namespace: 'profile' })
+    return reputations
+}
+
 // ===================
 // Connected Realm API
 // ===================

@@ -150,6 +150,33 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// =========================
+// Character Professions API
+// =========================
+
+interface CharacterProfessionTier {
+    tier: IdName,
+    skill_points: number,
+    max_skill_points: number,
+    known_recipes?: IdName[]
+}
+
+interface CharacterProfession {
+    profession: IdName,
+    tiers?: CharacterProfessionTier[],
+    skill_points?: number,
+    max_skill_points?: number
+}
+
+interface CharacterProfessionsIndex {
+    primaries: CharacterProfession[],
+    secondaries: CharacterProfession[]
+}
+
+export async function characterProfessions(realmSlug: string, characterName: string): Promise<CharacterProfessionsIndex> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/professions`, { namespace: 'profile' })
+}
+
 // =====================
 // Character Profile API
 // =====================

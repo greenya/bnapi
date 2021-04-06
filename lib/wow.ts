@@ -224,6 +224,15 @@ export async function characterReputations(realmSlug: string, characterName: str
     return reputations
 }
 
+// ====================
+// Character Titles API
+// ====================
+
+export async function characterTitles(realmSlug: string, characterName: string): Promise<IdName[]> {
+    const { titles } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/titles`, { namespace: 'profile' })
+    return titles
+}
+
 // ===================
 // Connected Realm API
 // ===================

@@ -195,7 +195,7 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
 // Character Encounters API
 // ========================
 
-interface EncounterExpansion {
+interface CharacterEncounterExpansion {
     expansion: IdName,
     instances: {
         instance: IdName,
@@ -215,12 +215,12 @@ interface EncounterExpansion {
     }[]
 }
 
-export async function characterDungeons(realmSlug: string, characterName: string): Promise<EncounterExpansion[]> {
+export async function characterDungeons(realmSlug: string, characterName: string): Promise<CharacterEncounterExpansion[]> {
     const { expansions } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/encounters/dungeons`, { namespace: 'profile' })
     return expansions
 }
 
-export async function characterRaids(realmSlug: string, characterName: string): Promise<EncounterExpansion[]> {
+export async function characterRaids(realmSlug: string, characterName: string): Promise<CharacterEncounterExpansion[]> {
     const { expansions } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/encounters/raids`, { namespace: 'profile' })
     return expansions
 }
@@ -472,6 +472,43 @@ export async function characterProfile(realmSlug: string, characterName: string)
  */
 export async function characterProfileStatus(realmSlug: string, characterName: string): Promise<CharacterProfileStatus> {
     return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/status`, { namespace: 'profile' })
+}
+
+// =================
+// Character PvP API
+// =================
+
+interface PlayedWonLost {
+    played: number,
+    won: number,
+    lost: number
+}
+
+interface CharacterPvpSummary {
+    honor_level: number,
+    pvp_map_statistics: {
+        world_map: IdName,
+        match_statistics: PlayedWonLost
+    }[],
+    honorable_kills: number
+}
+
+interface CharacterPvpBracket {
+    faction: TypeName,
+    bracket: IdName,
+    rating: number,
+    season: { id: number },
+    tier: { id: number },
+    season_match_statistics: PlayedWonLost,
+    weekly_match_statistics: PlayedWonLost
+}
+
+export async function characterPvpSummary(realmSlug: string, characterName: string): Promise<CharacterPvpSummary> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/pvp-summary`, { namespace: 'profile' })
+}
+
+export async function characterPvpBracket(realmSlug: string, characterName: string, bracket: string): Promise<CharacterPvpBracket> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/pvp-bracket/${bracket}`, { namespace: 'profile' })
 }
 
 // ====================

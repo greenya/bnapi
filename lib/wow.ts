@@ -191,6 +191,40 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// =========================
+// Character Collections API
+// =========================
+
+interface CharacterCollectionMount {
+    mount: IdName,
+    is_useable: boolean,
+    is_favorite?: boolean
+}
+
+interface CharacterCollectionPet {
+    species: IdName,
+    level: number,
+    quality: TypeName,
+    stats: {
+        breed_id: number,
+        health: number,
+        power: number,
+        speed: number
+    },
+    creature_display?: { id: number },
+    id: number
+}
+
+export async function characterMounts(realmSlug: string, characterName: string): Promise<CharacterCollectionMount[]> {
+    const { mounts } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/collections/mounts`, { namespace: 'profile' })
+    return mounts
+}
+
+export async function characterPets(realmSlug: string, characterName: string): Promise<CharacterCollectionPet[]> {
+    const { pets } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/collections/pets`, { namespace: 'profile' })
+    return pets
+}
+
 // ========================
 // Character Encounters API
 // ========================

@@ -191,6 +191,40 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// ========================
+// Character Encounters API
+// ========================
+
+interface EncounterExpansion {
+    expansion: IdName,
+    instances: {
+        instance: IdName,
+        modes: {
+            difficulty: TypeName,
+            status: TypeName,
+            progress: {
+                completed_count: number,
+                total_count: number,
+                encounters: {
+                    encounter: IdName,
+                    completed_count: number,
+                    last_kill_timestamp: number
+                }[]
+            }
+        }[]
+    }[]
+}
+
+export async function characterDungeons(realmSlug: string, characterName: string): Promise<EncounterExpansion[]> {
+    const { expansions } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/encounters/dungeons`, { namespace: 'profile' })
+    return expansions
+}
+
+export async function characterRaids(realmSlug: string, characterName: string): Promise<EncounterExpansion[]> {
+    const { expansions } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/encounters/raids`, { namespace: 'profile' })
+    return expansions
+}
+
 // =======================
 // Character Equipment API
 // =======================

@@ -14,15 +14,20 @@ interface IdNameOpt {
     name?: string
 }
 
+interface IdNameSlug {
+    id: number,
+    name: string,
+    slug: string
+}
+
 interface IdSlug {
     id: number,
     slug: string
 }
 
-interface IdNameSlug {
+interface IdType {
     id: number,
-    name: string,
-    slug: string
+    type: string
 }
 
 interface TypeName {
@@ -51,6 +56,31 @@ interface SpellTooltip {
 
 interface SpellTooltipSpell extends SpellTooltip {
     spell: IdName
+}
+
+interface SellPrice {
+    value: number,
+    display_strings: {
+        header: string,
+        gold: string,
+        silver: string,
+        copper: string
+    }
+}
+
+interface DisplayStringValue {
+    display_string: string,
+    value: number
+}
+
+interface DisplayStringColor {
+    display_string: string,
+    color: RGBA
+}
+
+interface DisplayValue {
+    display: DisplayStringColor,
+    value: number
 }
 
 interface Media {
@@ -159,6 +189,90 @@ interface Auction {
 export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     const { auctions } = await get(`data/wow/connected-realm/${connectedRealmId}/auctions`, { namespace: 'dynamic' })
     return auctions
+}
+
+// =======================
+// Character Equipment API
+// =======================
+
+interface CharacterEquippedItem {
+    item: { id: number },
+    enchantments?: {
+        display_string: string,
+        source_item: IdName,
+        enchantment_id: number,
+        enchantment_slot: IdType
+    }[],
+    sockets?: {
+        socket_type: TypeName,
+        item: IdName,
+        display_string: string,
+        media: { id: number }
+    }[],
+    slot: TypeName,
+    quantity: number,
+    context: number,
+    bonus_list?: number[],
+    timewalker_level?: number,
+    quality: TypeName,
+    name: string,
+    modified_appearance_id?: number,
+    media: { id: number },
+    item_class: IdName,
+    item_subclass: IdName,
+    inventory_type: TypeName,
+    binding: TypeName,
+    unique_equipped?: string,
+    limit_category?: string,
+    weapon?: {
+        damage: {
+            min_value: number,
+            max_value: number,
+            display_string: string,
+            damage_class: TypeName
+        },
+        attack_speed: DisplayStringValue,
+        dps: DisplayStringValue
+    },
+    armor?: DisplayValue,
+    shield_block?: DisplayValue,
+    stats?: {
+        type: TypeName,
+        value: number,
+        is_negated?: boolean,
+        is_equip_bonus?: boolean,
+        display: DisplayStringColor
+    }[],
+    spells?: {
+        spell: IdName,
+        description: string
+    }[],
+    upgrades?: {
+        value: number,
+        max_value: number,
+        display_string: string
+    },
+    sell_price?: SellPrice,
+    requirements: {
+        level?: { display_string: string },
+        playable_races?: { display_string: string, links: IdName[] },
+        faction?: { display_string: string, value: TypeName }
+    },
+    description?: string,
+    level: DisplayStringValue,
+    transmog?: {
+        item: IdName,
+        display_string: string,
+        item_modified_appearance_id: number
+    },
+    is_subclass_hidden?: boolean,
+    durability?: DisplayStringValue,
+    name_description?: DisplayStringColor
+}
+
+export async function characterEquipment(realmSlug: string, characterName: string): Promise<CharacterEquippedItem[]> {
+    const { equipped_items } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/equipment`, { namespace: 'profile' })
+    return equipped_items
 }
 
 // =========================
@@ -648,11 +762,6 @@ interface ItemSet extends IdName {
     is_effect_active?: boolean
 }
 
-interface Display {
-    display_string: string,
-    color: RGBA
-}
-
 interface PreviewItem {
     context?: number,
     item: { id: number },
@@ -663,22 +772,23 @@ interface PreviewItem {
     item_subclass: IdName,
     inventory_type: TypeName,
     binding?: TypeName,
-    armor?: { value: number, display: Display }
+    armor?: DisplayValue
     bonus_list?: number[],
     stats?: {
         type: TypeName,
         value: number,
         is_negated?: boolean,
         is_equip_bonus?: boolean,
-        display: Display
+        display: DisplayStringColor
     }[],
     spells?: {
         spell: IdName,
         description: string
     }[],
     requirements?: {
+        level: DisplayStringValue,
         playable_classes: { display_string: string },
-        level: { value: number, display_string: string }
+        faction?: { display_string: string, value: TypeName }
     },
     set?: {
         item_set: IdName,
@@ -687,16 +797,8 @@ interface PreviewItem {
         legacy: string,
         display_string: string
     },
-    level?: { value: number, display_string: string },
-    sell_price?: {
-        value: number,
-        display_strings: {
-            header: string,
-            gold: string,
-            silver: string,
-            copper: string
-        }
-    },
+    level?: DisplayStringValue,
+    sell_price?: SellPrice,
     unique_equipped?: string,
     description?: string,
     is_subclass_hidden: boolean,

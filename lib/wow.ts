@@ -191,6 +191,57 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// ==========================
+// Character Achievements API
+// ==========================
+
+interface CharacterAchievementCriteria {
+    id: number,
+    amount?: number,
+    is_completed: boolean,
+    child_criteria?: CharacterAchievementCriteria[]
+}
+
+interface CharacterAchievements {
+    total_quantity: number,
+    total_points: number,
+    achievements: {
+        id: number,
+        achievement: IdName,
+        criteria?: CharacterAchievementCriteria,
+        completed_timestamp: number
+    }[],
+    category_progress: {
+        category: IdName,
+        quantity: number,
+        points: number
+    }[],
+    recent_events: {
+        achievement: IdName,
+        timestamp: number
+    }[]
+}
+
+interface CharacterAchievementStatisticCategoryStat extends IdName {
+    last_updated_timestamp: number,
+    description?: string,
+    quantity: number
+}
+
+interface CharacterAchievementStatisticCategory extends IdName {
+    sub_categories?: CharacterAchievementStatisticCategory[],
+    statistics: CharacterAchievementStatisticCategoryStat[]
+}
+
+export async function characterAchievements(realmSlug: string, characterName: string): Promise<CharacterAchievements> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/achievements`, { namespace: 'profile' })
+}
+
+export async function characterAchievementStatistics(realmSlug: string, characterName: string): Promise<CharacterAchievementStatisticCategory[]> {
+    const { categories } = await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/achievements/statistics`, { namespace: 'profile' })
+    return categories
+}
+
 // ========================
 // Character Appearance API
 // ========================

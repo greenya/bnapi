@@ -75,21 +75,21 @@ deno run --allow-net main.ts
 - Profile APIs [link](https://develop.battle.net/documentation/world-of-warcraft/profile-apis)
 
     - [ ] Account Profile API
-    - [ ] Character Achievements API
-    - [ ] Character Appearance API
-    - [ ] Character Collections API
-    - [ ] Character Encounters API
-    - [ ] Character Equipment API
-    - [ ] Character Hunter Pets API
-    - [ ] Character Media API
-    - [ ] Character Mythic Keystone Profile API
-    - [ ] Character Professions API
-    - [ ] Character Profile API
-    - [ ] Character PvP API
-    - [ ] Character Quests API
-    - [ ] Character Reputations API
-    - [ ] Character Soulbinds API
-    - [ ] Character Specializations API
-    - [ ] Character Statistics API
-    - [ ] Character Titles API
+    - [x] Character Achievements API
+    - [x] Character Appearance API
+    - [x] Character Collections API
+    - [x] Character Encounters API
+    - [x] Character Equipment API
+    - [x] Character Hunter Pets API
+    - [x] Character Media API
+    - [x] Character Mythic Keystone Profile API
+    - [x] Character Professions API
+    - [x] Character Profile API
+    - [x] Character PvP API
+    - [x] Character Quests API
+    - [x] Character Reputations API
+    - [x] Character Soulbinds API
+    - [x] Character Specializations API
+    - [x] Character Statistics API
+    - [x] Character Titles API
     - [x] Guild API

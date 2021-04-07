@@ -191,6 +191,35 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
     return auctions
 }
 
+// ========================
+// Character Appearance API
+// ========================
+
+interface CharacterAppearance {
+    playable_race: IdName,
+    playable_class: IdName,
+    active_spec: IdName,
+    gender: TypeName,
+    faction: TypeName,
+    guild_crest: GuildCrest,
+    items: {
+        id: number,
+        slot: TypeName,
+        enchant: number,
+        item_appearance_modifier_id: number,
+        internal_slot_id: number,
+        subclass: number
+    }[],
+    customizations: {
+        option: IdName,
+        choice: { id: number, name?: string, display_order: number }
+    }[]
+}
+
+export async function characterAppearance(realmSlug: string, characterName: string): Promise<CharacterAppearance> {
+    return await get(`profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/appearance`, { namespace: 'profile' })
+}
+
 // =========================
 // Character Collections API
 // =========================

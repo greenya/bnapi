@@ -49,12 +49,12 @@ deno run --allow-net main.ts
     - [x] Journal API
     - [ ] Media Search API
     - [ ] Modified Crafting API
-    - [ ] Mount API
+    - [x] Mount API
     - [x] Mythic Keystone Affix API
     - [x] Mythic Keystone Dungeon API
     - [x] Mythic Keystone Leaderboard API
     - [ ] Mythic Raid Leaderboard API
-    - [ ] Pet API
+    - [x] Pet API
     - [x] Playable Class API
     - [x] Playable Race API
     - [x] Playable Specialization API
@@ -62,7 +62,7 @@ deno run --allow-net main.ts
     - [x] Profession API
     - [ ] PvP Season API
     - [ ] PvP Tier API
-    - [ ] Quest API
+    - [x] Quest API
     - [x] Realm API
     - [x] Region API
     - [x] Reputations API

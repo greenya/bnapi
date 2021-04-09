@@ -30,6 +30,12 @@ interface IdType {
     type: string
 }
 
+interface IdTypeName {
+    id: number,
+    type: string,
+    name: string
+}
+
 interface TypeName {
     type: string,
     name: string
@@ -1278,6 +1284,63 @@ export async function mythicKeystoneLeaderboard(connectedRealmId: number, dungeo
     const result = await get(`data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/${dungeonId}/period/${period}`, { namespace: 'dynamic' })
     connectedRealmRefFromRef(result.connected_realm)
     return result
+}
+
+// =======
+// Pet API
+// =======
+
+interface Pet extends IdName {
+    battle_pet_type: IdTypeName,
+    description: string,
+    is_capturable: boolean,
+    is_tradable: boolean,
+    is_battlepet: boolean,
+    is_alliance_only: boolean,
+    is_horde_only: boolean,
+    abilities: {
+        ability: IdName,
+        slot: number,
+        required_level: number
+    }[],
+    source: TypeName,
+    icon: string,
+    creature: IdName,
+    is_random_creature_display: boolean,
+    media: { id: number }
+}
+
+interface PetAbility extends IdName {
+    battle_pet_type: IdTypeName,
+    cooldown?: number,
+    rounds: number,
+    media: { id: number }
+}
+
+export async function pets(): Promise<IdName[]> {
+    const { pets } = await get('data/wow/pet/index', { namespace: 'static' })
+    return pets
+}
+
+export async function pet(id: number): Promise<Pet> {
+    return await get(`data/wow/pet/${id}`, { namespace: 'static' })
+}
+
+export async function petMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/pet/${id}`, { namespace: 'static' })
+}
+
+export async function petAbilities(): Promise<IdName[]> {
+    const { abilities } = await get('data/wow/pet-ability/index', { namespace: 'static' })
+    return abilities
+}
+
+export async function petAbility(id: number): Promise<PetAbility> {
+    return await get(`data/wow/pet-ability/${id}`, { namespace: 'static' })
+}
+
+export async function petAbilityMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/pet-ability/${id}`, { namespace: 'static' })
 }
 
 // ==================

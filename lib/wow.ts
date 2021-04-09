@@ -1120,6 +1120,28 @@ export async function journalInstanceMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/journal-instance/${id}`, { namespace: 'static' })
 }
 
+// =========
+// Mount API
+// =========
+
+interface Mount extends IdName {
+    creature_displays: { id: number }[],
+    description: string,
+    source: TypeName,
+    faction?: TypeName,
+    requirements?: { faction: TypeName },
+    should_exclude_if_uncollected?: boolean
+}
+
+export async function mounts(): Promise<IdName[]> {
+    const { mounts } = await get('data/wow/mount/index', { namespace: 'static' })
+    return mounts
+}
+
+export async function mount(id: number): Promise<Mount> {
+    return await get(`data/wow/mount/${id}`, { namespace: 'static' })
+}
+
 // =========================
 // Mythic Keystone Affix API
 // =========================

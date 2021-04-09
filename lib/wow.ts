@@ -1511,6 +1511,95 @@ export async function recipeMedia(id: number): Promise<Media> {
 }
 
 // =========
+// Quest API
+// =========
+
+interface QuestRequirementQuestCondition {
+    target?: IdName,
+    operator?: TypeName,
+    conditions?: QuestRequirementQuestCondition[]
+}
+
+interface Quest {
+    id: number,
+    title: string,
+    description: string,
+    area: IdName,
+    category?: IdName,
+    requirements: {
+        min_character_level: number,
+        max_character_level: number,
+        classes?: IdName[],
+        faction?: TypeName,
+        quests?: QuestRequirementQuestCondition
+    },
+    rewards: {
+        experience?: number,
+        reputations?: {
+            reward: IdName,
+            value: number
+        }[],
+        items?: {
+            items: { item: IdName }[]
+        },
+        money?: {
+            value: number,
+            units: { gold: number, silver: number, copper: number }
+        },
+        spell?: IdName
+    }
+}
+
+interface QuestCategory {
+    id: number,
+    category: string,
+    quests: IdName[]
+}
+
+interface QuestArea {
+    id: number,
+    area: string,
+    quests: IdName[]
+}
+
+interface QuestType {
+    id: number,
+    type: string,
+    quests: IdName[]
+}
+
+export async function quest(id: number): Promise<Quest> {
+    return await get(`data/wow/quest/${id}`, { namespace: 'static' })
+}
+
+export async function questCategories(): Promise<IdName[]> {
+    const { categories } = await get('data/wow/quest/category/index', { namespace: 'static' })
+    return categories
+}
+
+export async function questCategory(id: number): Promise<QuestCategory> {
+    return await get(`data/wow/quest/category/${id}`, { namespace: 'static' })
+}
+
+export async function questAreas(): Promise<IdName[]> {
+    const { areas } = await get('data/wow/quest/area/index', { namespace: 'static' })
+    return areas
+}
+
+export async function questArea(id: number): Promise<QuestArea> {
+    return await get(`data/wow/quest/area/${id}`, { namespace: 'static' })
+}
+
+export async function questTypes(): Promise<IdName[]> {
+    const { types } = await get('data/wow/quest/type/index', { namespace: 'static' })
+    return types
+}
+
+export async function questType(id: number): Promise<QuestType> {
+    return await get(`data/wow/quest/type/${id}`, { namespace: 'static' })
+}
+
+// =========
 // Realm API
 // =========
 

@@ -556,12 +556,12 @@ interface CharacterProfile extends IdName {
     last_login_timestamp: number,
     average_item_level: number,
     equipped_item_level: number,
-    active_title: {
+    active_title?: {
         id: number,
         name: string,
         display_string: string
     },
-    covenant_progress: {
+    covenant_progress?: {
         chosen_covenant: IdName,
         renown_level: number
     }

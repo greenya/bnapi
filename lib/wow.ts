@@ -1746,6 +1746,47 @@ export async function pvpTalent(id: number): Promise<PvpTalent> {
     return await get(`data/wow/pvp-talent/${id}`, { namespace: 'static' })
 }
 
+// ===============
+// Tech Talent API
+// ===============
+
+interface TechTalentTree {
+    id: number,
+    max_tiers: number,
+    talents: { id: number }[]
+}
+
+interface TechTalent extends IdName {
+    talent_tree: IdName,
+    description: string,
+    spell_tooltip: SpellTooltipSpell,
+    tier: number,
+    display_order: number,
+    media: { id: number }
+}
+
+export async function techTalentTrees(): Promise<IdName[]> {
+    const { talent_trees } = await get('data/wow/tech-talent-tree/index', { namespace: 'static' })
+    return talent_trees
+}
+
+export async function techTalentTree(id: number): Promise<TechTalentTree> {
+    return await get(`data/wow/tech-talent-tree/${id}`, { namespace: 'static' })
+}
+
+export async function techTalents(): Promise<IdName[]> {
+    const { talents } = await get('data/wow/tech-talent/index', { namespace: 'static' })
+    return talents
+}
+
+export async function techTalent(id: number): Promise<TechTalent> {
+    return await get(`data/wow/tech-talent/${id}`, { namespace: 'static' })
+}
+
+export async function techTalentMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/tech-talent/${id}`, { namespace: 'static' })
+}
+
 // =========
 // Title API
 // =========

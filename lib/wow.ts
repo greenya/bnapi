@@ -1705,6 +1705,47 @@ export async function spellMedia(id: number): Promise<Media> {
     return await get(`data/wow/media/spell/${id}`, { namespace: 'static' })
 }
 
+// ==========
+// Talent API
+// ==========
+
+interface Talent {
+    id: number,
+    tier_index: number,
+    column_index: number,
+    level: number,
+    description: string,
+    spell: IdName,
+    playable_class: IdName
+}
+
+interface PvpTalent {
+    id: number,
+    spell: IdName,
+    playable_specialization: IdName,
+    description: string,
+    unlock_player_level: number,
+    compatible_slots: number[]
+}
+
+export async function talents(): Promise<IdName[]> {
+    const { talents } = await get('data/wow/talent/index', { namespace: 'static' })
+    return talents
+}
+
+export async function talent(id: number): Promise<Talent> {
+    return await get(`data/wow/talent/${id}`, { namespace: 'static' })
+}
+
+export async function pvpTalents(): Promise<IdName[]> {
+    const { pvp_talents } = await get('data/wow/pvp-talent/index', { namespace: 'static' })
+    return pvp_talents
+}
+
+export async function pvpTalent(id: number): Promise<PvpTalent> {
+    return await get(`data/wow/pvp-talent/${id}`, { namespace: 'static' })
+}
+
 // =========
 // Title API
 // =========

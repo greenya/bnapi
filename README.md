@@ -67,7 +67,7 @@ deno run --allow-net main.ts
     - [x] Region API
     - [x] Reputations API
     - [x] Spell API
-    - [ ] Talent API
+    - [x] Talent API
     - [ ] Tech Talent API
     - [x] Title API
     - [x] WoW Token API

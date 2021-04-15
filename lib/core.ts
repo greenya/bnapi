@@ -1,4 +1,4 @@
-import { trace, error } from './util.ts'
+import { log, error } from './util.ts'
 
 type Region = 'us' | 'eu' | 'kr' | 'tw' | 'cn'
 
@@ -41,10 +41,10 @@ export async function auth(key: string, secret: string, region: Region, locale: 
             tokenReceivedAt: Date.now(),
             tokenExpiresAt: Date.now() + data.expires_in * 1000
         }
-        trace('Auth successful', config)
+        log('Auth successful')
         return true
     } else {
-        error('Auth failed', response)
+        error('Auth failed:', response.status, response.statusText)
         return false
     }
 }
@@ -55,10 +55,10 @@ async function request(url: string, args: { [_: string]: string }) {
     const response = await fetch(url + query)
 
     if (response.ok) {
-        trace('Request successful', response.url)
+        log('Request successful:', url)
         return await response.json()
     } else {
-        error('Request failed', response)
+        error('Request failed:', response.status, response.statusText, url)
         return false
     }
 }

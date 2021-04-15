@@ -1689,6 +1689,23 @@ export async function reputationTiers(id: number): Promise<ReputationTiers> {
 }
 
 // =========
+// Spell API
+// =========
+
+interface Spell extends IdName {
+    description: string,
+    media: { id: number }
+}
+
+export async function spell(id: number): Promise<Spell> {
+    return await get(`data/wow/spell/${id}`, { namespace: 'static' })
+}
+
+export async function spellMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/spell/${id}`, { namespace: 'static' })
+}
+
+// =========
 // Title API
 // =========
 

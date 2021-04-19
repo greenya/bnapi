@@ -46,7 +46,7 @@ All the API for World of Warcraft is located in `wow` object. Every call returns
     - [x] Connected Realm API
     - [ ] Covenant API
     - [ ] Creature API
-    - [ ] Guild Crest API
+    - [x] Guild Crest API
     - [x] Item API
     - [x] Journal API
     - [ ] Media Search API

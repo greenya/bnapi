@@ -36,6 +36,16 @@ interface IdTypeName {
     name: string
 }
 
+interface IdMediaId {
+    id: number,
+    media: { id: number }
+}
+
+interface IdRgba {
+    id: number,
+    rgba: RGBA
+}
+
 interface TypeName {
     type: string,
     name: string
@@ -923,6 +933,32 @@ export async function guildAchievements(realmSlug: string, nameSlug: string): Pr
 export async function guildRoster(realmSlug: string, nameSlug: string): Promise<GuildMember[]> {
     const { members } = await get(`data/wow/guild/${realmSlug}/${nameSlug}/roster`, { namespace: 'profile' })
     return members
+}
+
+// ===============
+// Guild Crest API
+// ===============
+
+interface GuildCrestComponents {
+    emblems: IdMediaId[],
+    borders: IdMediaId[],
+    colors: {
+        emblems: IdRgba[],
+        borders: IdRgba[],
+        backgrounds: IdRgba[]
+    }
+}
+
+export async function guildCrestComponents(): Promise<GuildCrestComponents> {
+    return await get(`data/wow/guild-crest/index`, { namespace: 'static' })
+}
+
+export async function guildCrestBorderMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/guild-crest/border/${id}`, { namespace: 'static' })
+}
+
+export async function guildCrestEmblemMedia(id: number): Promise<Media> {
+    return await get(`data/wow/media/guild-crest/emblem/${id}`, { namespace: 'static' })
 }
 
 // ========

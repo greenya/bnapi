@@ -36,6 +36,8 @@ deno run --allow-net main.ts
 
 ## World of Warcraft
 
+All the API for World of Warcraft is located in `wow` object. Every call returns result object (or array of objects) on success and `false` in case of failure. Some fails are not considered an API failure, for example, if you try to get list of hunter pets for a character that is not a hunter, you get `false` (not an empty array). These rare cases described in the Blizzard API (see links below).
+
 - Game Data APIs [link](https://develop.battle.net/documentation/world-of-warcraft/game-data-apis)
 
     - [x] Achievement API

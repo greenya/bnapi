@@ -55,7 +55,7 @@ All the API for World of Warcraft is located in `wow` object. Every call returns
     - [x] Mythic Keystone Affix API
     - [x] Mythic Keystone Dungeon API
     - [x] Mythic Keystone Leaderboard API
-    - [ ] Mythic Raid Leaderboard API
+    - [x] Mythic Raid Leaderboard API
     - [x] Pet API
     - [x] Playable Class API
     - [x] Playable Race API

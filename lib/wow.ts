@@ -1286,6 +1286,27 @@ export async function mythicKeystoneLeaderboard(connectedRealmId: number, dungeo
     return result
 }
 
+// ===========================
+// Mythic Raid Leaderboard API
+// ===========================
+
+interface MythicRaidLeaderboardEntry {
+    guild: {
+        id: number,
+        name: string,
+        realm: IdSlug
+    },
+    faction: { type: string },
+    timestamp: number,
+    region: string,
+    rank: number
+}
+
+export async function mythicRaidLeaderboard(raid: string, faction: string): Promise<MythicRaidLeaderboardEntry[]> {
+    const { entries } = await get(`data/wow/leaderboard/hall-of-fame/${raid}/${faction}`, { namespace: 'dynamic' })
+    return entries
+}
+
 // =======
 // Pet API
 // =======

@@ -535,8 +535,8 @@ interface CharacterProfession {
 }
 
 interface CharacterProfessionsIndex {
-    primaries: CharacterProfession[],
-    secondaries: CharacterProfession[]
+    primaries?: CharacterProfession[],
+    secondaries?: CharacterProfession[]
 }
 
 export async function characterProfessions(realmSlug: string, characterName: string): Promise<CharacterProfessionsIndex> {

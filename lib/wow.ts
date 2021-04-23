@@ -1515,7 +1515,7 @@ export async function powerType(id: number): Promise<IdName> {
 interface Profession extends IdName {
     description: string,
     type: TypeName,
-    skill_tiers: IdName[],
+    skill_tiers?: IdName[],
     media: { id: number }
 }
 

@@ -1522,7 +1522,7 @@ interface Profession extends IdName {
 interface ProfessionSkillTier extends IdName {
     minimum_skill_level: number,
     maximum_skill_level: number,
-    categories: {
+    categories?: {
         name: string,
         recipes: IdName[]
     }[]

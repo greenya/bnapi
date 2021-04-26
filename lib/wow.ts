@@ -1529,8 +1529,11 @@ interface ProfessionSkillTier extends IdName {
 }
 
 interface Recipe extends IdName {
-    crafted_item: IdName,
-    crafted_quantity: number,
+    description?: string,
+    alliance_crafted_item?: IdName,
+    horde_crafted_item?: IdName,
+    crafted_item?: IdName,
+    crafted_quantity: { value: number },
     reagents: {
         reagent: IdName,
         quantity: number

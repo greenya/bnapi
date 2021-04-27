@@ -1546,6 +1546,7 @@ interface Recipe extends IdName {
         slot_type: IdName,
         display_order: number
     }[],
+    rank?: number,
     media: { id: number }
 }
 

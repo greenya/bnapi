@@ -49,17 +49,24 @@ export async function auth(key: string, secret: string, region: Region, locale: 
     }
 }
 
-async function request(url: string, args: { [_: string]: string }) {
+// deno-lint-ignore no-explicit-any
+async function request(url: string, args: { [_: string]: string }, retryForTooManyRequests = true): Promise<any> {
     const euc = encodeURIComponent
     const query = Object.keys(args).reduce((a, k, i) => a + (i == 0 ? '?' : '&') + euc(k) + '=' + euc(args[k]), '')
     const response = await fetch(url + query)
 
     if (response.ok) {
-        log('Request successful:', url)
+        log(url)
         return await response.json()
     } else {
         error('Request failed:', response.status, response.statusText, url)
-        return false
+        if (response.status == 429 && retryForTooManyRequests) {
+            log('Retrying soon...')
+            await new Promise(r => setTimeout(r, 5000))
+            return await request(url, args, false)
+        } else {
+            return false
+        }
     }
 }
 

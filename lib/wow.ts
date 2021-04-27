@@ -1533,7 +1533,11 @@ interface Recipe extends IdName {
     alliance_crafted_item?: IdName,
     horde_crafted_item?: IdName,
     crafted_item?: IdName,
-    crafted_quantity: { value: number },
+    crafted_quantity: {
+        value?: number
+        minimum?: number,
+        maximum?: number
+    },
     reagents: {
         reagent: IdName,
         quantity: number

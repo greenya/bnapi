@@ -4,65 +4,65 @@ import { get } from './core.ts'
 
 // Common
 
-interface IdName {
+export interface IdName {
     id: number,
     name: string
 }
 
-interface IdNameOpt {
+export interface IdNameOpt {
     id: number,
     name?: string
 }
 
-interface IdNameSlug {
+export interface IdNameSlug {
     id: number,
     name: string,
     slug: string
 }
 
-interface IdSlug {
+export interface IdSlug {
     id: number,
     slug: string
 }
 
-interface IdType {
+export interface IdType {
     id: number,
     type: string
 }
 
-interface IdTypeName {
+export interface IdTypeName {
     id: number,
     type: string,
     name: string
 }
 
-interface IdMediaId {
+export interface IdMediaId {
     id: number,
     media: { id: number }
 }
 
-interface IdRgba {
+export interface IdRgba {
     id: number,
     rgba: RGBA
 }
 
-interface TypeName {
+export interface TypeName {
     type: string,
     name: string
 }
 
-interface GenderName {
+export interface GenderName {
     male: string,
     female: string
 }
 
-interface Character {
+export interface Character {
     id: number,
     name: string,
     realm: IdSlug
 }
 
-interface SpellTooltip {
+export interface SpellTooltip {
     description: string,
     cast_time: string,
     range?: string,
@@ -70,11 +70,11 @@ interface SpellTooltip {
     cooldown?: string
 }
 
-interface SpellTooltipSpell extends SpellTooltip {
+export interface SpellTooltipSpell extends SpellTooltip {
     spell: IdName
 }
 
-interface SellPrice {
+export interface SellPrice {
     value: number,
     display_strings: {
         header: string,
@@ -84,22 +84,22 @@ interface SellPrice {
     }
 }
 
-interface DisplayStringValue {
+export interface DisplayStringValue {
     display_string: string,
     value: number
 }
 
-interface DisplayStringColor {
+export interface DisplayStringColor {
     display_string: string,
     color: RGBA
 }
 
-interface DisplayValue {
+export interface DisplayValue {
     display: DisplayStringColor,
     value: number
 }
 
-interface Media {
+export interface Media {
     id: number,
     assets: {
         key: string,
@@ -108,7 +108,7 @@ interface Media {
     }[]
 }
 
-interface RGBA {
+export interface RGBA {
     r: number,
     g: number,
     b: number,
@@ -119,13 +119,13 @@ interface RGBA {
 // Achievement API
 // ===============
 
-interface AchievementCategoryIndex {
+export interface AchievementCategoryIndex {
     categories: IdName[],
     root_categories: IdName[],
     guild_categories: IdName[]
 }
 
-interface AchievementCategory extends IdName {
+export interface AchievementCategory extends IdName {
     achievements: IdName[],
     subcategories: IdName[],
     parent_category?: IdName,
@@ -137,7 +137,7 @@ interface AchievementCategory extends IdName {
     display_order: number
 }
 
-interface AchievementCriteria {
+export interface AchievementCriteria {
     id: number,
     description: string,
     amount: number,
@@ -146,7 +146,7 @@ interface AchievementCriteria {
     operator?: TypeName
 }
 
-interface Achievement extends IdName {
+export interface Achievement extends IdName {
     category: IdName,
     description: string,
     points: number,
@@ -181,7 +181,7 @@ export async function achievementMedia(id: number): Promise<Media> {
 // Auction House API
 // =================
 
-interface AuctionItem {
+export interface AuctionItem {
     id: number,
     context?: number,
     bonus_lists?: number[],
@@ -192,7 +192,7 @@ interface AuctionItem {
     pet_species_id?: number
 }
 
-interface Auction {
+export interface Auction {
     id: number,
     item: AuctionItem,
     bid?: number,
@@ -211,14 +211,14 @@ export async function auctions(connectedRealmId: number): Promise<Auction[]> {
 // Character Achievements API
 // ==========================
 
-interface CharacterAchievementCriteria {
+export interface CharacterAchievementCriteria {
     id: number,
     amount?: number,
     is_completed: boolean,
     child_criteria?: CharacterAchievementCriteria[]
 }
 
-interface CharacterAchievements {
+export interface CharacterAchievements {
     total_quantity: number,
     total_points: number,
     achievements: {
@@ -238,13 +238,13 @@ interface CharacterAchievements {
     }[]
 }
 
-interface CharacterAchievementStatisticCategoryStat extends IdName {
+export interface CharacterAchievementStatisticCategoryStat extends IdName {
     last_updated_timestamp: number,
     description?: string,
     quantity: number
 }
 
-interface CharacterAchievementStatisticCategory extends IdName {
+export interface CharacterAchievementStatisticCategory extends IdName {
     sub_categories?: CharacterAchievementStatisticCategory[],
     statistics: CharacterAchievementStatisticCategoryStat[]
 }
@@ -262,7 +262,7 @@ export async function characterAchievementStatistics(realmSlug: string, characte
 // Character Appearance API
 // ========================
 
-interface CharacterAppearance {
+export interface CharacterAppearance {
     playable_race: IdName,
     playable_class: IdName,
     active_spec: IdName,
@@ -291,13 +291,13 @@ export async function characterAppearance(realmSlug: string, characterName: stri
 // Character Collections API
 // =========================
 
-interface CharacterCollectionMount {
+export interface CharacterCollectionMount {
     mount: IdName,
     is_useable: boolean,
     is_favorite?: boolean
 }
 
-interface CharacterCollectionPet {
+export interface CharacterCollectionPet {
     species: IdName,
     level: number,
     quality: TypeName,
@@ -325,7 +325,7 @@ export async function characterPets(realmSlug: string, characterName: string): P
 // Character Encounters API
 // ========================
 
-interface CharacterEncounterExpansion {
+export interface CharacterEncounterExpansion {
     expansion: IdName,
     instances: {
         instance: IdName,
@@ -359,7 +359,7 @@ export async function characterRaids(realmSlug: string, characterName: string): 
 // Character Equipment API
 // =======================
 
-interface CharacterEquippedItem {
+export interface CharacterEquippedItem {
     item: { id: number },
     enchantments?: {
         display_string: string,
@@ -443,7 +443,7 @@ export async function characterEquipment(realmSlug: string, characterName: strin
 // Character Hunter Pets API
 // =========================
 
-interface CharacterHunterPet {
+export interface CharacterHunterPet {
     name: string,
     level: number,
     slot: number,
@@ -464,7 +464,7 @@ export async function characterHunterPets(realmSlug: string, characterName: stri
 // Character Media API
 // ===================
 
-interface CharacterMediaAsset {
+export interface CharacterMediaAsset {
     key: string,
     value: string
 }
@@ -478,7 +478,7 @@ export async function characterMediaAssets(realmSlug: string, characterName: str
 // Character Mythic Keystone Profile API
 // =====================================
 
-interface CharacterMythicKeystoneProfile {
+export interface CharacterMythicKeystoneProfile {
     current_period: {
         period: { id: number }
     },
@@ -487,7 +487,7 @@ interface CharacterMythicKeystoneProfile {
     }[]
 }
 
-interface CharacterMythicKeystoneRun {
+export interface CharacterMythicKeystoneRun {
     completed_timestamp: number,
     duration: number,
     keystone_level: number,
@@ -520,21 +520,21 @@ export async function characterMythicKeystoneSeasonBestRuns(realmSlug: string, c
 // Character Professions API
 // =========================
 
-interface CharacterProfessionTier {
+export interface CharacterProfessionTier {
     tier: IdName,
     skill_points: number,
     max_skill_points: number,
     known_recipes?: IdName[]
 }
 
-interface CharacterProfession {
+export interface CharacterProfession {
     profession: IdName,
     tiers?: CharacterProfessionTier[],
     skill_points?: number,
     max_skill_points?: number
 }
 
-interface CharacterProfessionsIndex {
+export interface CharacterProfessionsIndex {
     primaries?: CharacterProfession[],
     secondaries?: CharacterProfession[]
 }
@@ -547,7 +547,7 @@ export async function characterProfessions(realmSlug: string, characterName: str
 // Character Profile API
 // =====================
 
-interface CharacterProfile extends IdName {
+export interface CharacterProfile extends IdName {
     gender: TypeName,
     faction: TypeName,
     race: IdName,
@@ -577,7 +577,7 @@ interface CharacterProfile extends IdName {
     }
 }
 
-interface CharacterProfileStatus {
+export interface CharacterProfileStatus {
     id: number,
     is_valid: boolean
 }
@@ -608,13 +608,13 @@ export async function characterProfileStatus(realmSlug: string, characterName: s
 // Character PvP API
 // =================
 
-interface PlayedWonLost {
+export interface PlayedWonLost {
     played: number,
     won: number,
     lost: number
 }
 
-interface CharacterPvpSummary {
+export interface CharacterPvpSummary {
     honor_level: number,
     pvp_map_statistics: {
         world_map: IdName,
@@ -623,7 +623,7 @@ interface CharacterPvpSummary {
     honorable_kills: number
 }
 
-interface CharacterPvpBracket {
+export interface CharacterPvpBracket {
     faction: TypeName,
     bracket: IdName,
     rating: number,
@@ -659,7 +659,7 @@ export async function characterQuestsCompleted(realmSlug: string, characterName:
 // Character Reputations API
 // =========================
 
-interface CharacterReputation {
+export interface CharacterReputation {
     faction: IdName,
     standing: {
         raw: number,
@@ -684,7 +684,7 @@ export async function characterReputations(realmSlug: string, characterName: str
 // Character Soulbinds API
 // =======================
 
-interface CharacterSoulbind {
+export interface CharacterSoulbind {
     soulbind: IdName,
     traits?: {
         trait?: IdName,
@@ -710,7 +710,7 @@ export async function characterSoulbinds(realmSlug: string, characterName: strin
 // Character Specializations API
 // =============================
 
-interface CharacterSpecialization {
+export interface CharacterSpecialization {
     specialization: IdName,
     talents?: {
         talent: IdName,
@@ -736,7 +736,7 @@ export async function characterSpecializations(realmSlug: string, characterName:
 // Character Statistics API
 // ========================
 
-interface CharacterStatistics {
+export interface CharacterStatistics {
     health: number,
     power: number,
     power_type: IdName,
@@ -795,11 +795,11 @@ export async function characterTitles(realmSlug: string, characterName: string):
 // Connected Realm API
 // ===================
 
-interface ConnectedRealmRef {
+export interface ConnectedRealmRef {
     id: number
 }
 
-interface Realm extends IdNameSlug {
+export interface Realm extends IdNameSlug {
     region: IdName,
     connected_realm: ConnectedRealmRef,
     category: string,
@@ -809,7 +809,7 @@ interface Realm extends IdNameSlug {
     is_tournament: boolean
 }
 
-interface ConnectedRealm {
+export interface ConnectedRealm {
     id: number,
     has_queue: boolean,
     status: TypeName,
@@ -843,7 +843,7 @@ export async function connectedRealm(id: number): Promise<ConnectedRealm> {
 // Guild API
 // =========
 
-interface GuildCrest {
+export interface GuildCrest {
     emblem: {
         id: number,
         media: { id: number },
@@ -857,7 +857,7 @@ interface GuildCrest {
     background: { id: number, rgba: RGBA }
 }
 
-interface Guild extends IdName {
+export interface Guild extends IdName {
     faction: TypeName,
     created_timestamp: number,
     achievement_points: number,
@@ -866,7 +866,7 @@ interface Guild extends IdName {
     crest: GuildCrest
 }
 
-interface GuildActivity {
+export interface GuildActivity {
     timestamp: number,
     activity: { type: string },
     character_achievement?: {
@@ -879,14 +879,14 @@ interface GuildActivity {
     }
 }
 
-interface GuildAchievementCriteria {
+export interface GuildAchievementCriteria {
     id: number,
     amount?: number,
     is_completed: boolean,
     child_criteria?: GuildAchievementCriteria[]
 }
 
-interface GuildAchievements {
+export interface GuildAchievements {
     total_quantity: number,
     total_points: number,
     achievements: {
@@ -906,13 +906,13 @@ interface GuildAchievements {
     }[]
 }
 
-interface GuildMemberCharacter extends Character {
+export interface GuildMemberCharacter extends Character {
     level: number,
     playable_class: { id: number },
     playable_race: { id: number }
 }
 
-interface GuildMember {
+export interface GuildMember {
     character: GuildMemberCharacter,
     rank: number
 }
@@ -939,7 +939,7 @@ export async function guildRoster(realmSlug: string, nameSlug: string): Promise<
 // Guild Crest API
 // ===============
 
-interface GuildCrestComponents {
+export interface GuildCrestComponents {
     emblems: IdMediaId[],
     borders: IdMediaId[],
     colors: {
@@ -965,31 +965,31 @@ export async function guildCrestEmblemMedia(id: number): Promise<Media> {
 // Item API
 // ========
 
-interface ItemClass {
+export interface ItemClass {
     class_id: number,
     name: string,
     item_subclasses: IdName[]
 }
 
-interface ItemSubclass {
+export interface ItemSubclass {
     class_id: number,
     subclass_id: number,
     display_name: string,
     verbose_name: string
 }
 
-interface ItemSetEffect {
+export interface ItemSetEffect {
     display_string: string,
     required_count: number
 }
 
-interface ItemSet extends IdName {
+export interface ItemSet extends IdName {
     items: IdName[],
     effects: ItemSetEffect[],
     is_effect_active?: boolean
 }
 
-interface PreviewItem {
+export interface PreviewItem {
     context?: number,
     item: { id: number },
     quality: TypeName,
@@ -1032,7 +1032,7 @@ interface PreviewItem {
     crafting_reagent?: string
 }
 
-interface Item extends IdName {
+export interface Item extends IdName {
     quality: TypeName,
     level: number,
     required_level: number,
@@ -1084,12 +1084,12 @@ export async function itemMedia(id: number): Promise<Media> {
 // Journal API
 // ===========
 
-interface JournalExpansion extends IdName {
+export interface JournalExpansion extends IdName {
     dungeons: IdName[],
     raids: IdName[]
 }
 
-interface JournalEncounterSection {
+export interface JournalEncounterSection {
     id: number,
     title: string,
     body_text?: string,
@@ -1098,7 +1098,7 @@ interface JournalEncounterSection {
     spell?: IdName
 }
 
-interface JournalEncounter extends IdName {
+export interface JournalEncounter extends IdName {
     description: string,
     creatures: {
         id: number,
@@ -1115,7 +1115,7 @@ interface JournalEncounter extends IdName {
     modes?: TypeName[]
 }
 
-interface JournalInstance extends IdName {
+export interface JournalInstance extends IdName {
     description: string,
     encounters: IdName[],
     expansion: IdName,
@@ -1166,7 +1166,7 @@ export async function journalInstanceMedia(id: number): Promise<Media> {
 // Mount API
 // =========
 
-interface Mount extends IdName {
+export interface Mount extends IdName {
     creature_displays: { id: number }[],
     description: string,
     source: TypeName,
@@ -1188,7 +1188,7 @@ export async function mount(id: number): Promise<Mount> {
 // Mythic Keystone Affix API
 // =========================
 
-interface MythicKeystoneAffix extends IdName {
+export interface MythicKeystoneAffix extends IdName {
     description: string,
     media: { id: number }
 }
@@ -1210,7 +1210,7 @@ export async function mythicKeystoneAffixMedia(id: number): Promise<Media> {
 // Mythic Keystone Dungeon API
 // ===========================
 
-interface MythicKeystoneDungeon extends IdName {
+export interface MythicKeystoneDungeon extends IdName {
     map: IdName,
     zone: { slug: string },
     dungeon: IdName,
@@ -1220,23 +1220,23 @@ interface MythicKeystoneDungeon extends IdName {
     }[]
 }
 
-interface MythicKeystonePeriodIndex {
+export interface MythicKeystonePeriodIndex {
     periods: { id: number }[],
     current_period: { id: number }
 }
 
-interface MythicKeystonePeriod {
+export interface MythicKeystonePeriod {
     id: number,
     start_timestamp: number,
     end_timestamp: number
 }
 
-interface MythicKeystoneSeasonIndex {
+export interface MythicKeystoneSeasonIndex {
     seasons: { id: number }[],
     current_season: { id: number }
 }
 
-interface MythicKeystoneSeason {
+export interface MythicKeystoneSeason {
     id: number,
     start_timestamp: number,
     end_timestamp?: number,
@@ -1272,11 +1272,11 @@ export async function mythicKeystoneSeason(id: number): Promise<MythicKeystoneSe
 // Mythic Keystone Leaderboard API
 // ===============================
 
-interface MythicKeystoneLeaderboardRef extends IdName {
+export interface MythicKeystoneLeaderboardRef extends IdName {
     period: number
 }
 
-interface MythicKeystoneLeaderboard {
+export interface MythicKeystoneLeaderboard {
     map_challenge_mode_id: number,
     map: IdName,
     name: string,
@@ -1326,7 +1326,7 @@ export async function mythicKeystoneLeaderboard(connectedRealmId: number, dungeo
 // Mythic Raid Leaderboard API
 // ===========================
 
-interface MythicRaidLeaderboardEntry {
+export interface MythicRaidLeaderboardEntry {
     guild: {
         id: number,
         name: string,
@@ -1347,7 +1347,7 @@ export async function mythicRaidLeaderboard(raid: string, faction: string): Prom
 // Pet API
 // =======
 
-interface Pet extends IdName {
+export interface Pet extends IdName {
     battle_pet_type: IdTypeName,
     description: string,
     is_capturable: boolean,
@@ -1367,7 +1367,7 @@ interface Pet extends IdName {
     media: { id: number }
 }
 
-interface PetAbility extends IdName {
+export interface PetAbility extends IdName {
     battle_pet_type: IdTypeName,
     cooldown?: number,
     rounds: number,
@@ -1404,14 +1404,14 @@ export async function petAbilityMedia(id: number): Promise<Media> {
 // Playable Class API
 // ==================
 
-interface PlayableClass extends IdName {
+export interface PlayableClass extends IdName {
     gender_name: GenderName,
     power_type: IdName,
     specializations: IdName[],
     media: { id: number }
 }
 
-interface PlayableClassPvpTalentSlot {
+export interface PlayableClassPvpTalentSlot {
     slot_number: number,
     unlock_player_level: number
 }
@@ -1438,7 +1438,7 @@ export async function playableClassPvpTalentSlots(id: number): Promise<PlayableC
 // Playable Race API
 // =================
 
-interface PlayableRace extends IdName {
+export interface PlayableRace extends IdName {
     gender_name: GenderName,
     faction: TypeName,
     is_selectable: boolean,
@@ -1458,12 +1458,12 @@ export async function playableRace(id: number): Promise<PlayableRace> {
 // Playable Specialization API
 // ===========================
 
-interface PlayableSpecializationIndex {
+export interface PlayableSpecializationIndex {
     character_specializations: IdName[],
     pet_specializations: IdName[]
 }
 
-interface PlayableSpecialization extends IdName {
+export interface PlayableSpecialization extends IdName {
     role: TypeName,
     playable_class: IdNameOpt,
     gender_description: GenderName,
@@ -1512,14 +1512,14 @@ export async function powerType(id: number): Promise<IdName> {
 // Profession API
 // ==============
 
-interface Profession extends IdName {
+export interface Profession extends IdName {
     description: string,
     type: TypeName,
     skill_tiers?: IdName[],
     media: { id: number }
 }
 
-interface ProfessionSkillTier extends IdName {
+export interface ProfessionSkillTier extends IdName {
     minimum_skill_level: number,
     maximum_skill_level: number,
     categories?: {
@@ -1528,7 +1528,7 @@ interface ProfessionSkillTier extends IdName {
     }[]
 }
 
-interface Recipe extends IdName {
+export interface Recipe extends IdName {
     description?: string,
     alliance_crafted_item?: IdName,
     horde_crafted_item?: IdName,
@@ -1579,13 +1579,13 @@ export async function recipeMedia(id: number): Promise<Media> {
 // Quest API
 // =========
 
-interface QuestRequirementQuestCondition {
+export interface QuestRequirementQuestCondition {
     target?: IdName,
     operator?: TypeName,
     conditions?: QuestRequirementQuestCondition[]
 }
 
-interface Quest {
+export interface Quest {
     id: number,
     title: string,
     description: string,
@@ -1615,19 +1615,19 @@ interface Quest {
     }
 }
 
-interface QuestCategory {
+export interface QuestCategory {
     id: number,
     category: string,
     quests: IdName[]
 }
 
-interface QuestArea {
+export interface QuestArea {
     id: number,
     area: string,
     quests: IdName[]
 }
 
-interface QuestType {
+export interface QuestType {
     id: number,
     type: string,
     quests: IdName[]
@@ -1683,11 +1683,11 @@ export async function realm(slug: string): Promise<Realm> {
 // Region API
 // ==========
 
-interface RegionRef {
+export interface RegionRef {
     id: number
 }
 
-interface Region extends IdName {
+export interface Region extends IdName {
     tag: string
 }
 
@@ -1712,12 +1712,12 @@ export async function region(id: number): Promise<Region> {
 // Reputations API
 // ===============
 
-interface ReputationFactionIndex {
+export interface ReputationFactionIndex {
     factions: IdName[],
     root_factions: IdName[]
 }
 
-interface ReputationFaction extends IdName {
+export interface ReputationFaction extends IdName {
     reputation_tiers: { id: number },
     description?: string,
     can_paragon?: boolean,
@@ -1725,12 +1725,12 @@ interface ReputationFaction extends IdName {
     is_header?: boolean
 }
 
-interface ReputationTier extends IdName {
+export interface ReputationTier extends IdName {
     min_value: number,
     max_value: number
 }
 
-interface ReputationTiers {
+export interface ReputationTiers {
     id: number,
     tiers: ReputationTier[],
     faction?: IdName
@@ -1757,7 +1757,7 @@ export async function reputationTiers(id: number): Promise<ReputationTiers> {
 // Spell API
 // =========
 
-interface Spell extends IdName {
+export interface Spell extends IdName {
     description: string,
     media: { id: number }
 }
@@ -1774,7 +1774,7 @@ export async function spellMedia(id: number): Promise<Media> {
 // Talent API
 // ==========
 
-interface Talent {
+export interface Talent {
     id: number,
     tier_index: number,
     column_index: number,
@@ -1784,7 +1784,7 @@ interface Talent {
     playable_class: IdName
 }
 
-interface PvpTalent {
+export interface PvpTalent {
     id: number,
     spell: IdName,
     playable_specialization: IdName,
@@ -1815,13 +1815,13 @@ export async function pvpTalent(id: number): Promise<PvpTalent> {
 // Tech Talent API
 // ===============
 
-interface TechTalentTree {
+export interface TechTalentTree {
     id: number,
     max_tiers: number,
     talents: { id: number }[]
 }
 
-interface TechTalent extends IdName {
+export interface TechTalent extends IdName {
     talent_tree: IdName,
     description: string,
     spell_tooltip: SpellTooltipSpell,
@@ -1856,7 +1856,7 @@ export async function techTalentMedia(id: number): Promise<Media> {
 // Title API
 // =========
 
-interface Title extends IdName {
+export interface Title extends IdName {
     gender_name: GenderName,
     source: {
         type: TypeName,
@@ -1877,7 +1877,7 @@ export async function title(id: number): Promise<Title> {
 // WoW Token API
 // =============
 
-interface WowToken {
+export interface WowToken {
     price: number,
     last_updated_timestamp: number
 }

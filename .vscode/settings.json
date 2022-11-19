@@ -1,5 +1,24 @@
 {
     "deno.enable": true,
     "deno.lint": true,
-    "deno.unstable": true
+    "cSpell.words": [
+        "Azerite",
+        "battlepet",
+        "bnapi",
+        "capturable",
+        "cooldown",
+        "Deno",
+        "equippable",
+        "Grynevych",
+        "Leaderboard",
+        "Leaderboards",
+        "lifesteal",
+        "regen",
+        "soulbind",
+        "soulbinds",
+        "stackable",
+        "timewalker",
+        "transmog",
+        "Yuriy"
+    ]
 }

@@ -1,5 +1,3 @@
-// deno-lint-ignore-file camelcase
-
 import { get } from './core.ts'
 
 // Common

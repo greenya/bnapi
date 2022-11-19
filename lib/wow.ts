@@ -1167,9 +1167,13 @@ export async function journalInstanceMedia(id: number): Promise<Media> {
 export interface Mount extends IdName {
     creature_displays: { id: number }[],
     description: string,
-    source: TypeName,
+    source?: TypeName,
     faction?: TypeName,
-    requirements?: { faction: TypeName },
+    requirements?: {
+        faction?: TypeName,
+        races?: IdName[],
+        classes?: IdName[]
+    },
     should_exclude_if_uncollected?: boolean
 }
 

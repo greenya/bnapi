@@ -1860,13 +1860,14 @@ export async function techTalentMedia(id: number): Promise<Media> {
 
 export interface Title extends IdName {
     gender_name: GenderName,
-    source: {
-        type: TypeName,
-        achievements: IdName[]
+    source?: {
+        type?: TypeName,
+        achievements?: IdName[],
+        quests?: IdName[]
     }
 }
 
-export async function titles(): Promise<IdName> {
+export async function titles(): Promise<IdName[]> {
     const { titles } = await get('data/wow/title/index', { namespace: 'static' })
     return titles
 }

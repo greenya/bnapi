@@ -1357,12 +1357,12 @@ export interface Pet extends IdName {
     is_battlepet: boolean,
     is_alliance_only: boolean,
     is_horde_only: boolean,
-    abilities: {
+    abilities?: {
         ability: IdName,
         slot: number,
         required_level: number
     }[],
-    source: TypeName,
+    source?: TypeName,
     icon: string,
     creature: IdName,
     is_random_creature_display: boolean,

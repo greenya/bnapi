@@ -15,7 +15,11 @@ let config: {
     locale: Locale,
     token: string,
     tokenReceivedAt: number,
-    tokenExpiresAt: number
+    tokenExpiresAt: number,
+    stats: {
+        totalRequests: number,
+        totalFailedRequests: number
+    }
 }
 
 export async function auth(key: string, secret: string, region: Region, locale: Locale): Promise<boolean> {
@@ -39,7 +43,11 @@ export async function auth(key: string, secret: string, region: Region, locale: 
             locale,
             token: data.access_token,
             tokenReceivedAt: Date.now(),
-            tokenExpiresAt: Date.now() + data.expires_in * 1000
+            tokenExpiresAt: Date.now() + data.expires_in * 1000,
+            stats: {
+                totalRequests: 0,
+                totalFailedRequests: 0
+            }
         }
         log('Auth successful')
         return true
@@ -50,23 +58,26 @@ export async function auth(key: string, secret: string, region: Region, locale: 
 }
 
 // deno-lint-ignore no-explicit-any
-async function request(url: string, args: { [_: string]: string }, retryForTooManyRequests = true): Promise<any> {
+async function request(url: string, args: { [_: string]: string }, retryTimesOnError = 3): Promise<any> {
     const euc = encodeURIComponent
     const query = Object.keys(args).reduce((a, k, i) => a + (i == 0 ? '?' : '&') + euc(k) + '=' + euc(args[k]), '')
     const response = await fetch(url + query)
+    config.stats.totalRequests++
 
     if (response.ok) {
         log(url)
         return await response.json()
+    }
+
+    config.stats.totalFailedRequests++
+    error('Request failed:', response.status, response.statusText, url)
+
+    if (retryTimesOnError > 0) {
+        log('Retrying in 5 sec...')
+        await new Promise(r => setTimeout(r, 5000))
+        return await request(url, args, retryTimesOnError - 1)
     } else {
-        error('Request failed:', response.status, response.statusText, url)
-        if (response.status == 429 && retryForTooManyRequests) {
-            log('Retrying soon...')
-            await new Promise(r => setTimeout(r, 5000))
-            return await request(url, args, false)
-        } else {
-            return false
-        }
+        return null
     }
 }
 
@@ -83,4 +94,11 @@ export async function get(service: string, args: { [_: string]: string }) {
         : `https://${config.region}.api.blizzard.com/`
 
     return await request(host + service, args)
+}
+
+export function stats() {
+    return {
+        tokenReceivedAt: config.tokenReceivedAt,
+        ...config.stats
+    }
 }

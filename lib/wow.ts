@@ -1591,8 +1591,11 @@ export interface Quest {
     id: number,
     title: string,
     description: string,
-    area: IdName,
+    type?: IdName,
     category?: IdName,
+    area: IdName,
+    is_daily?: boolean,
+    is_weekly?: boolean,
     requirements: {
         min_character_level: number,
         max_character_level: number,

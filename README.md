@@ -1,6 +1,6 @@
 # bnapi
 
-Blizzard Battle.net API wrapper for Deno.
+Blizzard Battle.net API wrapper for Deno -- [bnapi](https://deno.land/x/bnapi).
 
 ## Usage
 
